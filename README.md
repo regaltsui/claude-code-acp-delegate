@@ -127,6 +127,7 @@ See `examples/acp-delegate.json` for the full example file.
 | `models` | string[] | no | Model allowlist. When set, the tool exposes a `model` enum arg. |
 | `defaultModel` | string | no | Used when `model` is omitted. Must be in `models`. |
 | `modelFlag` | string | no | CLI flag passed to the agent binary. Defaults to `--model`. |
+| `autoApprove` | boolean | no | Controls how the plugin answers the agent's `session/request_permission` calls — the requests an ACP agent makes before running its built-in shell, web, or write tools. `true` (default) selects an `allow_once` option so the agent can use its own tools. Set to `false` to select `reject_once` and lock the agent to read-only filesystem access only. |
 
 Top-level options:
 
@@ -237,7 +238,7 @@ Claude reads the state file and reports:
 
 | Limitation | Detail |
 |---|---|
-| Read-only filesystem | Agents can read files (`fs.readTextFile`) but cannot write files, run shell commands, or call MCP servers. |
+| Filesystem service offered to the agent | The plugin only services `fs.readTextFile` requests on behalf of the agent (with cwd containment). The agent's *own* tools (its built-in shell, write, web, etc.) are governed by `autoApprove` — set per-agent in config, default `true`. Set `autoApprove: false` to refuse every `session/request_permission` and effectively keep the agent read-only. |
 | No persistent sessions | Each tool call spawns a fresh agent subprocess. There is no session reuse or warm subprocess pool. |
 | One-shot only | A single tool call is a single prompt exchange. No multi-turn conversation within one call. |
 | Text output only | Image and structured-data parts from agents are ignored in v1. |

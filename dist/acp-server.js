@@ -19486,11 +19486,17 @@ function validateAgent(raw, index) {
       }
     }
   }
+  if (candidate.autoApprove !== void 0 && typeof candidate.autoApprove !== "boolean") {
+    throw new Error(
+      `Agent config at index ${index} is invalid: 'autoApprove' must be a boolean when provided`
+    );
+  }
   return {
     id: candidate.id,
     command: candidate.command,
     default: candidate.default,
     timeout: candidate.timeout ?? DEFAULT_TIMEOUT_MS,
+    autoApprove: candidate.autoApprove ?? true,
     ...candidate.label !== void 0 ? { label: candidate.label } : {},
     ...candidate.description !== void 0 ? { description: candidate.description } : {},
     ...candidate.whenToUse !== void 0 ? { whenToUse: candidate.whenToUse } : {},
@@ -19894,7 +19900,23 @@ async function runOneShotSession(opts, prompt) {
         return;
       }
       if (msg.method === "session/request_permission" && msg.id !== void 0) {
-        sendResult(msg.id, { outcome: { outcome: "cancelled" } });
+        const params = msg.params ?? {};
+        const options = Array.isArray(params.options) ? params.options : [];
+        const preferredKinds = opts.autoApprove ? ["allow_once", "allow_always"] : ["reject_once", "reject_always"];
+        let chosen;
+        for (const kind of preferredKinds) {
+          chosen = options.find(
+            (o) => !!o && typeof o === "object" && o.kind === kind && typeof o.optionId === "string"
+          );
+          if (chosen) break;
+        }
+        if (chosen) {
+          sendResult(msg.id, {
+            outcome: { outcome: "selected", optionId: chosen.optionId }
+          });
+        } else {
+          sendResult(msg.id, { outcome: { outcome: "cancelled" } });
+        }
         return;
       }
     }
@@ -20422,7 +20444,8 @@ async function runDelegation(agent, args, ctx) {
         command,
         cwd,
         timeout: agent.timeout ?? DEFAULT_TIMEOUT_MS,
-        signal: ctx.abort
+        signal: ctx.abort,
+        autoApprove: agent.autoApprove ?? true
       },
       fullPrompt
     );

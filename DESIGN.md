@@ -179,6 +179,7 @@ Field reference:
 | `models` | string[] | no | Model allowlist. When non-empty, adds a closed `model` enum arg to the tool. |
 | `defaultModel` | string | no | Used when the `model` arg is omitted. Must be in `models` if both are set. |
 | `modelFlag` | string | no | CLI flag used to pass the model to the agent. Defaults to `--model`. |
+| `autoApprove` | boolean | no | Controls how the plugin answers `session/request_permission` calls from the agent. `true` (default) selects `allow_once` so the agent can use its built-in tools (shell, web, write). `false` selects `reject_once` to lock the agent to read-only filesystem access. Falls back to `cancelled` only when the agent provides no matching option. |
 
 Top-level:
 
