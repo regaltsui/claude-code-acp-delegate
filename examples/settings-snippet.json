@@ -1,0 +1,7 @@
+{
+  "_comment": "Paste the statusLine block into your ~/.claude/settings.json. Claude Code plugins cannot auto-install statusLine — you must add it manually. Replace the path with the absolute path to this plugin's scripts/ directory.",
+  "statusLine": {
+    "type": "command",
+    "command": "/REPLACE_WITH_ABSOLUTE_PATH/claude-code-acp-delegate/scripts/status-line.sh"
+  }
+}

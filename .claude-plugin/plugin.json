@@ -1,0 +1,10 @@
+{
+  "name": "claude-code-acp-delegate",
+  "version": "0.1.0",
+  "description": "Delegate self-contained tasks to ACP-compatible coding agents (gemini, opencode, claude-agent-acp) from Claude Code via MCP.",
+  "license": "MIT",
+  "author": { "name": "regaltsui" },
+  "homepage": "https://github.com/regaltsui/claude-code-acp-delegate",
+  "repository": "https://github.com/regaltsui/claude-code-acp-delegate",
+  "keywords": ["claude-code", "mcp", "acp", "agent", "delegation"]
+}
