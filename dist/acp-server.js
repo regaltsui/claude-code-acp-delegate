@@ -2231,15 +2231,15 @@ var require_resolve = __commonJS({
       }
       return count;
     }
-    function getFullPath(resolver, id = "", normalize) {
+    function getFullPath(resolver2, id = "", normalize) {
       if (normalize !== false)
         id = normalizeId(id);
-      const p = resolver.parse(id);
-      return _getFullPath(resolver, p);
+      const p = resolver2.parse(id);
+      return _getFullPath(resolver2, p);
     }
     exports2.getFullPath = getFullPath;
-    function _getFullPath(resolver, p) {
-      const serialized = resolver.serialize(p);
+    function _getFullPath(resolver2, p) {
+      const serialized = resolver2.serialize(p);
       return serialized.split("#")[0] + "#";
     }
     exports2._getFullPath = _getFullPath;
@@ -2248,9 +2248,9 @@ var require_resolve = __commonJS({
       return id ? id.replace(TRAILING_SLASH_HASH, "") : "";
     }
     exports2.normalizeId = normalizeId;
-    function resolveUrl(resolver, baseId, id) {
+    function resolveUrl(resolver2, baseId, id) {
       id = normalizeId(id);
-      return resolver.resolve(baseId, id);
+      return resolver2.resolve(baseId, id);
     }
     exports2.resolveUrl = resolveUrl;
     var ANCHOR = /^[a-z_][-a-z0-9._]*$/i;
@@ -2846,10 +2846,10 @@ var require_ref_error = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     var resolve_1 = require_resolve();
     var MissingRefError = class extends Error {
-      constructor(resolver, baseId, ref, msg) {
+      constructor(resolver2, baseId, ref, msg) {
         super(msg || `can't resolve reference ${ref} from id ${baseId}`);
-        this.missingRef = (0, resolve_1.resolveUrl)(resolver, baseId, ref);
-        this.missingSchema = (0, resolve_1.normalizeId)((0, resolve_1.getFullPath)(resolver, this.missingRef));
+        this.missingRef = (0, resolve_1.resolveUrl)(resolver2, baseId, ref);
+        this.missingSchema = (0, resolve_1.normalizeId)((0, resolve_1.getFullPath)(resolver2, this.missingRef));
       }
     };
     exports2.default = MissingRefError;
@@ -3644,49 +3644,49 @@ var require_fast_uri = __commonJS({
       schemelessOptions.skipEscape = true;
       return serialize(resolved, schemelessOptions);
     }
-    function resolveComponent(base, relative2, options, skipNormalization) {
+    function resolveComponent(base, relative3, options, skipNormalization) {
       const target = {};
       if (!skipNormalization) {
         base = parse3(serialize(base, options), options);
-        relative2 = parse3(serialize(relative2, options), options);
+        relative3 = parse3(serialize(relative3, options), options);
       }
       options = options || {};
-      if (!options.tolerant && relative2.scheme) {
-        target.scheme = relative2.scheme;
-        target.userinfo = relative2.userinfo;
-        target.host = relative2.host;
-        target.port = relative2.port;
-        target.path = removeDotSegments(relative2.path || "");
-        target.query = relative2.query;
+      if (!options.tolerant && relative3.scheme) {
+        target.scheme = relative3.scheme;
+        target.userinfo = relative3.userinfo;
+        target.host = relative3.host;
+        target.port = relative3.port;
+        target.path = removeDotSegments(relative3.path || "");
+        target.query = relative3.query;
       } else {
-        if (relative2.userinfo !== void 0 || relative2.host !== void 0 || relative2.port !== void 0) {
-          target.userinfo = relative2.userinfo;
-          target.host = relative2.host;
-          target.port = relative2.port;
-          target.path = removeDotSegments(relative2.path || "");
-          target.query = relative2.query;
+        if (relative3.userinfo !== void 0 || relative3.host !== void 0 || relative3.port !== void 0) {
+          target.userinfo = relative3.userinfo;
+          target.host = relative3.host;
+          target.port = relative3.port;
+          target.path = removeDotSegments(relative3.path || "");
+          target.query = relative3.query;
         } else {
-          if (!relative2.path) {
+          if (!relative3.path) {
             target.path = base.path;
-            if (relative2.query !== void 0) {
-              target.query = relative2.query;
+            if (relative3.query !== void 0) {
+              target.query = relative3.query;
             } else {
               target.query = base.query;
             }
           } else {
-            if (relative2.path[0] === "/") {
-              target.path = removeDotSegments(relative2.path);
+            if (relative3.path[0] === "/") {
+              target.path = removeDotSegments(relative3.path);
             } else {
               if ((base.userinfo !== void 0 || base.host !== void 0 || base.port !== void 0) && !base.path) {
-                target.path = "/" + relative2.path;
+                target.path = "/" + relative3.path;
               } else if (!base.path) {
-                target.path = relative2.path;
+                target.path = relative3.path;
               } else {
-                target.path = base.path.slice(0, base.path.lastIndexOf("/") + 1) + relative2.path;
+                target.path = base.path.slice(0, base.path.lastIndexOf("/") + 1) + relative3.path;
               }
               target.path = removeDotSegments(target.path);
             }
-            target.query = relative2.query;
+            target.query = relative3.query;
           }
           target.userinfo = base.userinfo;
           target.host = base.host;
@@ -3694,7 +3694,7 @@ var require_fast_uri = __commonJS({
         }
         target.scheme = base.scheme;
       }
-      target.fragment = relative2.fragment;
+      target.fragment = relative3.fragment;
       return target;
     }
     function equal(uriA, uriB, options) {
@@ -17597,15 +17597,15 @@ var Protocol = class {
               if (queuedMessage.type === "response" || queuedMessage.type === "error") {
                 const message = queuedMessage.message;
                 const requestId = message.id;
-                const resolver = this._requestResolvers.get(requestId);
-                if (resolver) {
+                const resolver2 = this._requestResolvers.get(requestId);
+                if (resolver2) {
                   this._requestResolvers.delete(requestId);
                   if (queuedMessage.type === "response") {
-                    resolver(message);
+                    resolver2(message);
                   } else {
                     const errorMessage = message;
                     const error2 = new McpError(errorMessage.error.code, errorMessage.error.message, errorMessage.error.data);
-                    resolver(error2);
+                    resolver2(error2);
                   }
                 } else {
                   const messageType = queuedMessage.type === "response" ? "Response" : "Error";
@@ -17926,14 +17926,14 @@ var Protocol = class {
   }
   _onresponse(response) {
     const messageId = Number(response.id);
-    const resolver = this._requestResolvers.get(messageId);
-    if (resolver) {
+    const resolver2 = this._requestResolvers.get(messageId);
+    if (resolver2) {
       this._requestResolvers.delete(messageId);
       if (isJSONRPCResultResponse(response)) {
-        resolver(response);
+        resolver2(response);
       } else {
         const error2 = new McpError(response.error.code, response.error.message, response.error.data);
-        resolver(error2);
+        resolver2(error2);
       }
       return;
     }
@@ -18379,9 +18379,9 @@ var Protocol = class {
       for (const message of messages) {
         if (message.type === "request" && isJSONRPCRequest(message.message)) {
           const requestId = message.message.id;
-          const resolver = this._requestResolvers.get(requestId);
-          if (resolver) {
-            resolver(new McpError(ErrorCode.InternalError, "Task cancelled or completed"));
+          const resolver2 = this._requestResolvers.get(requestId);
+          if (resolver2) {
+            resolver2(new McpError(ErrorCode.InternalError, "Task cancelled or completed"));
             this._requestResolvers.delete(requestId);
           } else {
             this._onerror(new Error(`Resolver missing for request ${requestId} during task ${taskId} cleanup`));
@@ -19292,84 +19292,501 @@ var StdioServerTransport = class {
   }
 };
 
-// src/acp-server.ts
+// node_modules/@regaltsui/acp-delegate/shared/acp-client.ts
 var import_node_child_process = require("node:child_process");
 var import_node_readline = require("node:readline");
-var import_node_os = require("node:os");
 var import_promises = require("node:fs/promises");
-var import_node_fs = require("node:fs");
 var import_node_path = require("node:path");
-var import_node_crypto = require("node:crypto");
-var SERVER_NAME = "acp-delegate";
-var SERVER_VERSION = "0.1.0";
-var PROJECT_CWD = process.cwd();
-var registry2 = [];
-function registerTool(t) {
-  if (registry2.some((r) => r.name === t.name)) {
-    throw new Error(`Duplicate tool name: ${t.name}`);
-  }
-  registry2.push(t);
-}
-var inflightControllers = /* @__PURE__ */ new Set();
-function zodToJsonSchema2(schema) {
-  return zodToJsonSchema(schema, {
-    target: "openApi3",
-    $refStrategy: "none"
-  });
-}
-var server = new Server(
-  { name: SERVER_NAME, version: SERVER_VERSION },
-  { capabilities: { tools: {} } }
-);
-server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: registry2.map((t) => ({
-    name: t.name,
-    description: t.description,
-    inputSchema: t.jsonSchema
-  }))
-}));
-function errorResult(text) {
-  return { content: [{ type: "text", text }], isError: true };
-}
-server.setRequestHandler(
-  CallToolRequestSchema,
-  async (req) => {
-    const { name, arguments: rawArgs } = req.params;
-    const tool = registry2.find((t) => t.name === name);
-    if (!tool) return errorResult(`Unknown tool: ${name}`);
-    const parsed = tool.inputSchema.safeParse(rawArgs ?? {});
-    if (!parsed.success)
-      return errorResult(
-        `Invalid arguments for ${name}: ${parsed.error.message}`
-      );
-    const controller = new AbortController();
-    inflightControllers.add(controller);
-    const ctx = {
-      directory: PROJECT_CWD,
-      abort: controller.signal
-    };
-    try {
-      const result = await tool.execute(parsed.data, ctx);
-      const isError = result.metadata?.["status"] === "error";
-      return {
-        content: [{ type: "text", text: result.output }],
-        isError,
-        _meta: result.metadata
-      };
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      return errorResult(`${name} crashed: ${msg}`);
-    } finally {
-      inflightControllers.delete(controller);
-    }
-  }
-);
-var DEFAULT_TIMEOUT_MS = 6e5;
 var GRACE_PERIOD_MS = 5e3;
 var MAX_OUTPUT_BYTES = 8 * 1024 * 1024;
 var STDERR_BUFFER_BYTES = 64 * 1024;
 var ACP_PROTOCOL_VERSION = 1;
 var SESSION_CLOSE_TIMEOUT_MS = 1e3;
+var AcpError = class extends Error {
+  code;
+  stderr;
+  constructor(message, code, stderr) {
+    super(message);
+    this.name = "AcpError";
+    this.code = code;
+    this.stderr = stderr;
+  }
+};
+var AcpTimeoutError = class extends AcpError {
+  agentId;
+  timeoutMs;
+  constructor(agentId, timeoutMs, stderr) {
+    super(`Agent ${agentId} timed out after ${timeoutMs}ms`, "ETIMEDOUT", stderr);
+    this.name = "AcpTimeoutError";
+    this.agentId = agentId;
+    this.timeoutMs = timeoutMs;
+  }
+};
+var AcpAbortError = class extends AcpError {
+  constructor(stderr) {
+    super("Delegation aborted", "ECANCELLED", stderr);
+    this.name = "AcpAbortError";
+  }
+};
+var VALID_STOP_REASONS = /* @__PURE__ */ new Set([
+  "end_turn",
+  "max_tokens",
+  "max_turn_requests",
+  "refusal",
+  "cancelled"
+]);
+function coerceStopReason(value) {
+  return typeof value === "string" && VALID_STOP_REASONS.has(value) ? value : void 0;
+}
+var activeChildren = /* @__PURE__ */ new Set();
+var reaperRegistered = false;
+function registerReaperOnce() {
+  if (reaperRegistered) return;
+  reaperRegistered = true;
+  const reap = () => {
+    for (const child of activeChildren) {
+      try {
+        if (!child.killed) child.kill("SIGTERM");
+      } catch {
+      }
+    }
+  };
+  process.once("exit", reap);
+  process.once("SIGINT", () => {
+    reap();
+    process.exit(130);
+  });
+  process.once("SIGTERM", () => {
+    reap();
+    process.exit(143);
+  });
+}
+function isPathInside(child, parent) {
+  const rel = (0, import_node_path.relative)(parent, child);
+  return rel.length > 0 && !rel.startsWith("..") && !(0, import_node_path.isAbsolute)(rel);
+}
+async function readBoundedTextFile(cwdAbs, params) {
+  const path = params.path;
+  if (typeof path !== "string" || path.length === 0) {
+    throw new Error("readTextFile: 'path' must be a non-empty string");
+  }
+  const requested = (0, import_node_path.isAbsolute)(path) ? path : (0, import_node_path.resolve)(cwdAbs, path);
+  const target = (0, import_node_path.resolve)(requested);
+  if (target !== cwdAbs && !isPathInside(target, cwdAbs)) {
+    throw new Error(
+      `readTextFile: path is outside the project directory: ${path}`
+    );
+  }
+  const raw = await (0, import_promises.readFile)(target, "utf8");
+  const startLine = typeof params.line === "number" && Number.isFinite(params.line) && params.line > 0 ? params.line : 1;
+  const limit = typeof params.limit === "number" && Number.isFinite(params.limit) && params.limit > 0 ? params.limit : void 0;
+  if (startLine === 1 && limit === void 0) return { content: raw };
+  const lines = raw.split("\n");
+  const sliced = lines.slice(
+    startLine - 1,
+    limit !== void 0 ? startLine - 1 + limit : void 0
+  );
+  return { content: sliced.join("\n") };
+}
+async function connectAgent(opts) {
+  const binary = opts.command[0];
+  if (!binary) {
+    throw new AcpError(
+      "connectAgent: command must have at least one element",
+      "EINVAL"
+    );
+  }
+  const args = opts.command.slice(1);
+  const cwdAbs = (0, import_node_path.resolve)(opts.cwd);
+  registerReaperOnce();
+  let child;
+  try {
+    child = (0, import_node_child_process.spawn)(binary, args, {
+      cwd: opts.cwd,
+      stdio: ["pipe", "pipe", "pipe"]
+    });
+  } catch (e) {
+    const err = e;
+    if (err.code === "ENOENT")
+      throw new AcpError(`Agent binary not found: ${binary}`, "ENOENT");
+    throw new AcpError(err.message, err.code);
+  }
+  activeChildren.add(child);
+  const stderrChunks = [];
+  let stderrBytes = 0;
+  child.stderr.on("data", (chunk) => {
+    stderrChunks.push(chunk);
+    stderrBytes += chunk.length;
+    while (stderrBytes > STDERR_BUFFER_BYTES && stderrChunks.length > 1) {
+      const dropped = stderrChunks.shift();
+      if (dropped) stderrBytes -= dropped.length;
+    }
+  });
+  const getStderrTail = () => stderrChunks.length === 0 ? "" : Buffer.concat(stderrChunks).toString("utf8");
+  let nextRequestId = 0;
+  const pending = /* @__PURE__ */ new Map();
+  const sendJson = (obj) => {
+    try {
+      child.stdin.write(JSON.stringify(obj) + "\n", () => {
+      });
+    } catch {
+    }
+  };
+  const sendNotification = (method, params) => {
+    sendJson({ jsonrpc: "2.0", method, params });
+  };
+  const sendRequest = (method, params) => {
+    const id = ++nextRequestId;
+    return new Promise((resolveReq, rejectReq) => {
+      pending.set(id, { resolve: resolveReq, reject: rejectReq });
+      try {
+        child.stdin.write(
+          JSON.stringify({ jsonrpc: "2.0", id, method, params }) + "\n",
+          (err) => {
+            if (err) {
+              pending.delete(id);
+              rejectReq(
+                new AcpError(
+                  `Failed to write to agent stdin: ${err.message}`,
+                  "EIO"
+                )
+              );
+            }
+          }
+        );
+      } catch (err) {
+        pending.delete(id);
+        rejectReq(
+          new AcpError(
+            `Failed to write to agent stdin: ${err.message}`,
+            "EIO"
+          )
+        );
+      }
+    });
+  };
+  const sendResult = (id, result) => {
+    sendJson({ jsonrpc: "2.0", id, result });
+  };
+  const sendErrorResponse = (id, message, code = -32603) => {
+    sendJson({
+      jsonrpc: "2.0",
+      id,
+      error: { code, message, data: { details: message } }
+    });
+  };
+  let activeSessionId = null;
+  let currentHandleSessionUpdate = null;
+  let currentAutoApprove = true;
+  const rl = (0, import_node_readline.createInterface)({ input: child.stdout });
+  rl.on("line", (rawLine) => {
+    const trimmed = rawLine.trim();
+    if (trimmed.length === 0) return;
+    let msg;
+    try {
+      msg = JSON.parse(trimmed);
+    } catch {
+      return;
+    }
+    if (typeof msg.id === "number" && msg.method === void 0 && pending.has(msg.id)) {
+      const handler = pending.get(msg.id);
+      pending.delete(msg.id);
+      if (msg.error) {
+        handler.reject(
+          new AcpError(
+            msg.error.message ?? "Agent returned error",
+            "EAGENT"
+          )
+        );
+      } else {
+        handler.resolve(msg.result);
+      }
+      return;
+    }
+    if (typeof msg.method === "string") {
+      if (msg.method === "session/update") {
+        currentHandleSessionUpdate?.(msg.params ?? {});
+        return;
+      }
+      if (msg.method === "fs/read_text_file" && msg.id !== void 0) {
+        const reqId = msg.id;
+        void (async () => {
+          try {
+            const result = await readBoundedTextFile(
+              cwdAbs,
+              msg.params ?? {}
+            );
+            sendResult(reqId, result);
+          } catch (err) {
+            sendErrorResponse(reqId, err.message);
+          }
+        })();
+        return;
+      }
+      if (msg.method === "session/request_permission" && msg.id !== void 0) {
+        const params = msg.params ?? {};
+        const options = Array.isArray(params.options) ? params.options : [];
+        const preferredKinds = currentAutoApprove ? ["allow_once", "allow_always"] : ["reject_once", "reject_always"];
+        let chosen;
+        for (const kind of preferredKinds) {
+          chosen = options.find(
+            (o) => !!o && typeof o === "object" && o.kind === kind && typeof o.optionId === "string"
+          );
+          if (chosen) break;
+        }
+        if (chosen) {
+          sendResult(msg.id, {
+            outcome: { outcome: "selected", optionId: chosen.optionId }
+          });
+        } else {
+          sendResult(msg.id, { outcome: { outcome: "cancelled" } });
+        }
+        return;
+      }
+    }
+  });
+  const killChild = () => {
+    if (!child.killed) {
+      try {
+        child.kill("SIGTERM");
+      } catch {
+      }
+      setTimeout(() => {
+        try {
+          if (!child.killed) child.kill("SIGKILL");
+        } catch {
+        }
+      }, GRACE_PERIOD_MS).unref();
+    }
+  };
+  const spawnErrorPromise = new Promise((_, reject) => {
+    child.once("error", (e) => {
+      if (e.code === "ENOENT") {
+        reject(
+          new AcpError(
+            `Agent binary not found: ${binary}`,
+            "ENOENT",
+            getStderrTail()
+          )
+        );
+      } else {
+        reject(new AcpError(e.message, e.code, getStderrTail()));
+      }
+    });
+  });
+  let serverSupportsClose = false;
+  try {
+    const initResult = await Promise.race([
+      sendRequest("initialize", {
+        protocolVersion: ACP_PROTOCOL_VERSION,
+        clientCapabilities: { fs: { readTextFile: true } }
+      }),
+      spawnErrorPromise
+    ]);
+    serverSupportsClose = Boolean(
+      initResult?.agentCapabilities?.sessionCapabilities?.close
+    );
+  } catch (e) {
+    activeChildren.delete(child);
+    killChild();
+    rl.close();
+    throw e;
+  }
+  spawnErrorPromise.catch(() => {
+  });
+  let busy = false;
+  let idleSinceMs = Date.now();
+  let disposed = false;
+  const connection = {
+    get key() {
+      return opts.key;
+    },
+    get idleSinceMs() {
+      return idleSinceMs;
+    },
+    isBusy() {
+      return busy;
+    },
+    async runPrompt(prompt, runOpts) {
+      if (disposed) {
+        throw new AcpError("Cannot runPrompt on a disposed connection", "EDISPOSED");
+      }
+      if (busy) {
+        throw new AcpError("Connection is already busy", "EBUSY");
+      }
+      busy = true;
+      idleSinceMs = null;
+      const startMs = Date.now();
+      const agentId = binary;
+      currentAutoApprove = runOpts.autoApprove;
+      const collectedText = [];
+      let outputBytes = 0;
+      let outputCapped = false;
+      let stopReason;
+      activeSessionId = null;
+      currentHandleSessionUpdate = (params) => {
+        const u = params.update;
+        if (u?.sessionUpdate === "agent_message_chunk" && u.content?.type === "text" && typeof u.content.text === "string") {
+          if (outputCapped) return;
+          const chunk = u.content.text;
+          const remaining = MAX_OUTPUT_BYTES - outputBytes;
+          if (chunk.length <= remaining) {
+            collectedText.push(chunk);
+            outputBytes += chunk.length;
+          } else {
+            if (remaining > 0) collectedText.push(chunk.slice(0, remaining));
+            outputBytes = MAX_OUTPUT_BYTES;
+            outputCapped = true;
+            collectedText.push(
+              `
+
+[output truncated at ${MAX_OUTPUT_BYTES} bytes]
+`
+            );
+          }
+        }
+      };
+      if (runOpts.signal?.aborted) {
+        busy = false;
+        idleSinceMs = Date.now();
+        currentHandleSessionUpdate = null;
+        throw new AcpAbortError();
+      }
+      const sendCancelNotification = () => {
+        if (!activeSessionId) return;
+        sendNotification("session/cancel", { sessionId: activeSessionId });
+      };
+      let timeoutHandle = null;
+      const timeoutPromise = new Promise((_, reject) => {
+        timeoutHandle = setTimeout(() => {
+          sendCancelNotification();
+          killChild();
+          reject(
+            new AcpTimeoutError(agentId, runOpts.timeout, getStderrTail())
+          );
+        }, runOpts.timeout);
+      });
+      let abortListener = null;
+      const abortPromise = new Promise((_, reject) => {
+        if (!runOpts.signal) return;
+        abortListener = () => {
+          sendCancelNotification();
+          killChild();
+          reject(new AcpAbortError(getStderrTail()));
+        };
+        runOpts.signal.addEventListener("abort", abortListener, { once: true });
+      });
+      const sessionPromise = (async () => {
+        const newSessionResult = await sendRequest("session/new", {
+          cwd: opts.cwd,
+          mcpServers: []
+        });
+        activeSessionId = newSessionResult.sessionId;
+        const promptResult = await sendRequest("session/prompt", {
+          sessionId: newSessionResult.sessionId,
+          prompt: [{ type: "text", text: prompt }]
+        });
+        stopReason = coerceStopReason(promptResult?.stopReason);
+        return collectedText.join("");
+      })();
+      try {
+        const races = [
+          sessionPromise,
+          timeoutPromise,
+          spawnErrorPromise
+        ];
+        if (runOpts.signal) races.push(abortPromise);
+        const output = await Promise.race(races);
+        return {
+          output,
+          metadata: {
+            durationMs: Date.now() - startMs,
+            agentId,
+            ...stopReason !== void 0 ? { stopReason } : {}
+          }
+        };
+      } catch (e) {
+        const tail = getStderrTail();
+        if (e instanceof AcpError) {
+          if (e.stderr === void 0 && tail.length > 0) {
+            if (e instanceof AcpTimeoutError)
+              throw new AcpTimeoutError(e.agentId, e.timeoutMs, tail);
+            if (e instanceof AcpAbortError) throw new AcpAbortError(tail);
+            throw new AcpError(e.message, e.code, tail);
+          }
+          throw e;
+        }
+        const errObj = e instanceof Error ? e : new Error(String(e));
+        throw new AcpError(
+          errObj.message,
+          "EAGENT",
+          tail.length > 0 ? tail : void 0
+        );
+      } finally {
+        if (timeoutHandle) clearTimeout(timeoutHandle);
+        if (abortListener && runOpts.signal) {
+          try {
+            runOpts.signal.removeEventListener("abort", abortListener);
+          } catch {
+          }
+        }
+        if (serverSupportsClose && activeSessionId && stopReason !== void 0 && !child.killed) {
+          try {
+            await Promise.race([
+              sendRequest("session/close", {
+                sessionId: activeSessionId
+              }).catch(() => {
+              }),
+              new Promise(
+                (res) => setTimeout(() => res(), SESSION_CLOSE_TIMEOUT_MS).unref()
+              )
+            ]);
+          } catch {
+          }
+        }
+        currentHandleSessionUpdate = null;
+        busy = false;
+        idleSinceMs = Date.now();
+      }
+    },
+    async dispose() {
+      if (disposed) return;
+      disposed = true;
+      const disposeErr = new AcpError("Connection disposed", "EDISPOSED");
+      for (const handler of pending.values()) handler.reject(disposeErr);
+      pending.clear();
+      activeChildren.delete(child);
+      killChild();
+      rl.close();
+    }
+  };
+  return connection;
+}
+async function runOneShotSession(opts, prompt) {
+  if (opts.signal?.aborted) throw new AcpAbortError();
+  const conn = await connectAgent({
+    command: opts.command,
+    cwd: opts.cwd
+  });
+  try {
+    return await conn.runPrompt(prompt, {
+      timeout: opts.timeout,
+      signal: opts.signal,
+      autoApprove: opts.autoApprove
+    });
+  } finally {
+    await conn.dispose();
+  }
+}
+
+// node_modules/@regaltsui/acp-delegate/shared/host-adapter.ts
+var CLAUDE_NAMESPACE = {
+  configDirSubpath: "claude",
+  envPrefix: "CLAUDE_ACP_DELEGATE"
+};
+
+// node_modules/@regaltsui/acp-delegate/shared/types.ts
+var DEFAULT_TIMEOUT_MS = 6e5;
 var HEALTH_PROBE_TIMEOUT_MS = 5e3;
 var STATE_RECENT_MAX = 20;
 var STATE_FILE_VERSION = 1;
@@ -19377,18 +19794,42 @@ var INCLUDE_CONTEXT_PER_FILE_BUDGET_BYTES = 64 * 1024;
 var INCLUDE_CONTEXT_TOTAL_BUDGET_BYTES = 256 * 1024;
 var USAGE_LOG_MAX_BYTES = 5 * 1024 * 1024;
 var PROMPT_SNIPPET_MAX = 80;
-var MISSING_AGENTS_MESSAGE = `Plugin config must include a non-empty 'agents' array. Set $CLAUDE_ACP_DELEGATE_CONFIG to a JSON file path, or place the config at ~/.config/claude/acp-delegate.json or ~/.claude/acp-delegate.json. Example: { "agents": [{ "id": "gemini", "command": ["gemini", "--acp"] }] }`;
-var CONFIG_ENV_VAR = "CLAUDE_ACP_DELEGATE_CONFIG";
-function fallbackConfigPaths() {
+var TITLE_PROMPT_MAX = 60;
+var DEFAULT_RETRY_ATTEMPTS = 3;
+var COMPLEXITY_TIERS = ["high", "mid", "low"];
+function resolveRetryAttempts(argValue, envVarName) {
+  if (argValue !== void 0) {
+    return Math.max(1, argValue);
+  }
+  const envVal = process.env[envVarName];
+  if (envVal !== void 0) {
+    const parsed = parseInt(envVal, 10);
+    if (!Number.isNaN(parsed)) return Math.max(1, parsed);
+  }
+  return DEFAULT_RETRY_ATTEMPTS;
+}
+
+// node_modules/@regaltsui/acp-delegate/shared/config.ts
+var import_node_fs = require("node:fs");
+var import_node_path2 = require("node:path");
+var import_node_os = require("node:os");
+function missingAgentsMessage(namespace) {
+  const envVar = `${namespace.envPrefix}_CONFIG`;
+  const dir = namespace.configDirSubpath;
+  return `Plugin config must include a non-empty 'agents' array. Set $${envVar} to a JSON file path, or place the config at ~/.config/${dir}/acp-delegate.json or ~/.${dir}/acp-delegate.json. Example: { "agents": [{ "id": "gemini", "command": ["gemini", "--acp"] }] }`;
+}
+function fallbackConfigPaths(namespace) {
   const paths = [];
-  const fromEnv = process.env[CONFIG_ENV_VAR];
+  const envVar = `${namespace.envPrefix}_CONFIG`;
+  const fromEnv = process.env[envVar];
   if (fromEnv && fromEnv.length > 0) paths.push(fromEnv);
-  paths.push((0, import_node_path.join)((0, import_node_os.homedir)(), ".config", "claude", "acp-delegate.json"));
-  paths.push((0, import_node_path.join)((0, import_node_os.homedir)(), ".claude", "acp-delegate.json"));
+  const dir = namespace.configDirSubpath;
+  paths.push((0, import_node_path2.join)((0, import_node_os.homedir)(), ".config", dir, "acp-delegate.json"));
+  paths.push((0, import_node_path2.join)((0, import_node_os.homedir)(), `.${dir}`, "acp-delegate.json"));
   return paths;
 }
-function readFallbackConfig() {
-  for (const p of fallbackConfigPaths()) {
+function readFallbackConfig(namespace) {
+  for (const p of fallbackConfigPaths(namespace)) {
     if (!(0, import_node_fs.existsSync)(p)) continue;
     try {
       const raw = (0, import_node_fs.readFileSync)(p, "utf8");
@@ -19486,6 +19927,33 @@ function validateAgent(raw, index) {
       }
     }
   }
+  if (candidate.complexityModels !== void 0) {
+    if (typeof candidate.complexityModels !== "object" || candidate.complexityModels === null || Array.isArray(candidate.complexityModels)) {
+      throw new Error(
+        `Agent config at index ${index} is invalid: 'complexityModels' must be an object when provided`
+      );
+    }
+    for (const key of Object.keys(candidate.complexityModels)) {
+      if (!COMPLEXITY_TIERS.includes(key)) {
+        throw new Error(
+          `Agent config at index ${index} is invalid: complexityModels has unknown key '${key}' (allowed: high, mid, low)`
+        );
+      }
+      const val = candidate.complexityModels[key];
+      if (val !== void 0) {
+        if (typeof val !== "string" || val.length === 0) {
+          throw new Error(
+            `Agent config at index ${index} is invalid: complexityModels.${key} must be a non-empty string when provided`
+          );
+        }
+        if (Array.isArray(candidate.models) && candidate.models.length > 0 && !candidate.models.includes(val)) {
+          throw new Error(
+            `Agent config at index ${index} is invalid: complexityModels.${key} '${val}' is not in models [${candidate.models.join(", ")}]`
+          );
+        }
+      }
+    }
+  }
   if (candidate.autoApprove !== void 0 && typeof candidate.autoApprove !== "boolean") {
     throw new Error(
       `Agent config at index ${index} is invalid: 'autoApprove' must be a boolean when provided`
@@ -19502,34 +19970,42 @@ function validateAgent(raw, index) {
     ...candidate.whenToUse !== void 0 ? { whenToUse: candidate.whenToUse } : {},
     ...candidate.models !== void 0 ? { models: [...candidate.models] } : {},
     ...candidate.defaultModel !== void 0 ? { defaultModel: candidate.defaultModel } : {},
+    ...candidate.complexityModels !== void 0 ? { complexityModels: { ...candidate.complexityModels } } : {},
     ...candidate.modelFlag !== void 0 ? { modelFlag: candidate.modelFlag } : {}
   };
 }
-function loadConfig() {
-  const source = readFallbackConfig();
+function loadConfig(namespace) {
+  const source = readFallbackConfig(namespace);
   if (!source) {
-    throw new Error(MISSING_AGENTS_MESSAGE);
+    throw new Error(missingAgentsMessage(namespace));
   }
   return {
     agents: source.agents.map((raw, i) => validateAgent(raw, i)),
     injectSystemGuidance: source.injectSystemGuidance === true
   };
 }
-var STATE_DIR_ENV = "CLAUDE_ACP_DELEGATE_STATE_DIR";
+
+// node_modules/@regaltsui/acp-delegate/shared/state.ts
+var import_promises2 = require("node:fs/promises");
+var import_node_path3 = require("node:path");
+var import_node_os2 = require("node:os");
+var import_node_crypto = require("node:crypto");
 var STATE_FILE_NAME = "state.json";
 var USAGE_LOG_NAME = "usage.jsonl";
-function getStateDir() {
-  const explicit = process.env[STATE_DIR_ENV];
+function getStateDir(namespace) {
+  const envVar = `${namespace.envPrefix}_STATE_DIR`;
+  const explicit = process.env[envVar];
   if (explicit && explicit.length > 0) return explicit;
   const xdg = process.env["XDG_STATE_HOME"];
-  if (xdg && xdg.length > 0) return (0, import_node_path.join)(xdg, "claude", "acp-delegate");
-  return (0, import_node_path.join)((0, import_node_os.homedir)(), ".local", "state", "claude", "acp-delegate");
+  const dir = namespace.configDirSubpath;
+  if (xdg && xdg.length > 0) return (0, import_node_path3.join)(xdg, dir, "acp-delegate");
+  return (0, import_node_path3.join)((0, import_node_os2.homedir)(), ".local", "state", dir, "acp-delegate");
 }
-function getStateFilePath() {
-  return (0, import_node_path.join)(getStateDir(), STATE_FILE_NAME);
+function getStateFilePath(namespace) {
+  return (0, import_node_path3.join)(getStateDir(namespace), STATE_FILE_NAME);
 }
-function getUsageLogPath() {
-  return (0, import_node_path.join)(getStateDir(), USAGE_LOG_NAME);
+function getUsageLogPath(namespace) {
+  return (0, import_node_path3.join)(getStateDir(namespace), USAGE_LOG_NAME);
 }
 function emptyState() {
   return {
@@ -19541,9 +20017,9 @@ function emptyState() {
     health: []
   };
 }
-async function loadState() {
+async function loadState(namespace) {
   try {
-    const raw = await (0, import_promises.readFile)(getStateFilePath(), "utf8");
+    const raw = await (0, import_promises2.readFile)(getStateFilePath(namespace), "utf8");
     const parsed = JSON.parse(raw);
     return {
       version: STATE_FILE_VERSION,
@@ -19557,14 +20033,14 @@ async function loadState() {
     return emptyState();
   }
 }
-async function ensureStateDir() {
-  await (0, import_promises.mkdir)(getStateDir(), { recursive: true });
+async function ensureStateDir(namespace) {
+  await (0, import_promises2.mkdir)(getStateDir(namespace), { recursive: true });
 }
-async function saveStateAtomic(state) {
-  const target = getStateFilePath();
-  await ensureStateDir();
-  const dir = (0, import_node_path.dirname)(target);
-  const tmpPath = (0, import_node_path.join)(
+async function saveStateAtomic(namespace, state) {
+  const target = getStateFilePath(namespace);
+  await ensureStateDir(namespace);
+  const dir = (0, import_node_path3.dirname)(target);
+  const tmpPath = (0, import_node_path3.join)(
     dir,
     `${STATE_FILE_NAME}.${process.pid}.${(0, import_node_crypto.randomBytes)(4).toString("hex")}.tmp`
   );
@@ -19575,11 +20051,11 @@ async function saveStateAtomic(state) {
     pid: process.pid
   };
   try {
-    await (0, import_promises.writeFile)(tmpPath, JSON.stringify(payload, null, 2), "utf8");
-    await (0, import_promises.rename)(tmpPath, target);
+    await (0, import_promises2.writeFile)(tmpPath, JSON.stringify(payload, null, 2), "utf8");
+    await (0, import_promises2.rename)(tmpPath, target);
   } catch (err) {
     try {
-      await (0, import_promises.unlink)(tmpPath);
+      await (0, import_promises2.unlink)(tmpPath);
     } catch {
     }
     throw err;
@@ -19592,17 +20068,17 @@ function enqueue(fn) {
   });
   return next;
 }
-async function recordInflight(entry) {
+async function recordInflight(namespace, entry) {
   return enqueue(async () => {
-    const state = await loadState();
+    const state = await loadState(namespace);
     state.inflight = state.inflight.filter((e) => e.callId !== entry.callId);
     state.inflight.push(entry);
-    await saveStateAtomic(state);
+    await saveStateAtomic(namespace, state);
   });
 }
-async function resolveInflight(callId, result) {
+async function resolveInflight(namespace, callId, result) {
   return enqueue(async () => {
-    const state = await loadState();
+    const state = await loadState(namespace);
     const found = state.inflight.find((e) => e.callId === callId);
     state.inflight = state.inflight.filter((e) => e.callId !== callId);
     if (found) {
@@ -19615,560 +20091,54 @@ async function resolveInflight(callId, result) {
       };
       state.recent = [recent, ...state.recent].slice(0, STATE_RECENT_MAX);
     }
-    await saveStateAtomic(state);
+    await saveStateAtomic(namespace, state);
   });
 }
-async function setHealthResults(health) {
+async function recordHealth(namespace, health) {
   return enqueue(async () => {
-    const state = await loadState();
+    const state = await loadState(namespace);
     state.health = health;
-    await saveStateAtomic(state);
+    await saveStateAtomic(namespace, state);
   });
 }
-async function rotateUsageLogIfNeeded(target) {
+async function rotateUsageLogIfNeeded(namespace, target) {
   try {
-    const info = await (0, import_promises.stat)(target);
+    const info = await (0, import_promises2.stat)(target);
     if (info.size < USAGE_LOG_MAX_BYTES) return;
     const rolled = `${target}.1`;
     try {
-      await (0, import_promises.unlink)(rolled);
+      await (0, import_promises2.unlink)(rolled);
     } catch {
     }
-    await (0, import_promises.rename)(target, rolled);
+    await (0, import_promises2.rename)(target, rolled);
   } catch {
   }
 }
-async function appendUsage(entry) {
+async function appendUsage(namespace, entry) {
   return enqueue(async () => {
-    await ensureStateDir();
-    const target = getUsageLogPath();
-    await rotateUsageLogIfNeeded(target);
-    await (0, import_promises.appendFile)(target, JSON.stringify(entry) + "\n", "utf8");
+    await ensureStateDir(namespace);
+    const target = getUsageLogPath(namespace);
+    await rotateUsageLogIfNeeded(namespace, target);
+    await (0, import_promises2.appendFile)(target, JSON.stringify(entry) + "\n", "utf8");
   });
 }
-var AcpError = class extends Error {
-  code;
-  stderr;
-  constructor(message, code, stderr) {
-    super(message);
-    this.name = "AcpError";
-    this.code = code;
-    this.stderr = stderr;
-  }
-};
-var AcpTimeoutError = class extends AcpError {
-  agentId;
-  timeoutMs;
-  constructor(agentId, timeoutMs, stderr) {
-    super(`Agent ${agentId} timed out after ${timeoutMs}ms`, "ETIMEDOUT", stderr);
-    this.name = "AcpTimeoutError";
-    this.agentId = agentId;
-    this.timeoutMs = timeoutMs;
-  }
-};
-var AcpAbortError = class extends AcpError {
-  constructor(stderr) {
-    super("Delegation aborted", "ECANCELLED", stderr);
-    this.name = "AcpAbortError";
-  }
-};
-var VALID_STOP_REASONS = /* @__PURE__ */ new Set([
-  "end_turn",
-  "max_tokens",
-  "max_turn_requests",
-  "refusal",
-  "cancelled"
-]);
-function coerceStopReason(value) {
-  return typeof value === "string" && VALID_STOP_REASONS.has(value) ? value : void 0;
-}
-var activeChildren = /* @__PURE__ */ new Set();
-var reaperRegistered = false;
-function registerReaperOnce() {
-  if (reaperRegistered) return;
-  reaperRegistered = true;
-  const reap = () => {
-    for (const child of activeChildren) {
-      try {
-        if (!child.killed) child.kill("SIGTERM");
-      } catch {
-      }
-    }
-  };
-  process.once("exit", reap);
-  process.once("SIGINT", () => {
-    reap();
-    process.exit(130);
-  });
-  process.once("SIGTERM", () => {
-    reap();
-    process.exit(143);
-  });
-}
-function isPathInside(child, parent) {
-  const rel = (0, import_node_path.relative)(parent, child);
-  return rel.length > 0 && !rel.startsWith("..") && !(0, import_node_path.isAbsolute)(rel);
-}
-async function readBoundedTextFile(cwdAbs, params) {
-  const path = params.path;
-  if (typeof path !== "string" || path.length === 0) {
-    throw new Error("readTextFile: 'path' must be a non-empty string");
-  }
-  const requested = (0, import_node_path.isAbsolute)(path) ? path : (0, import_node_path.resolve)(cwdAbs, path);
-  const target = (0, import_node_path.resolve)(requested);
-  if (target !== cwdAbs && !isPathInside(target, cwdAbs)) {
-    throw new Error(
-      `readTextFile: path is outside the project directory: ${path}`
-    );
-  }
-  const raw = await (0, import_promises.readFile)(target, "utf8");
-  const startLine = typeof params.line === "number" && Number.isFinite(params.line) && params.line > 0 ? params.line : 1;
-  const limit = typeof params.limit === "number" && Number.isFinite(params.limit) && params.limit > 0 ? params.limit : void 0;
-  if (startLine === 1 && limit === void 0) return { content: raw };
-  const lines = raw.split("\n");
-  const sliced = lines.slice(
-    startLine - 1,
-    limit !== void 0 ? startLine - 1 + limit : void 0
-  );
-  return { content: sliced.join("\n") };
-}
-async function runOneShotSession(opts, prompt) {
-  const startMs = Date.now();
-  const binary = opts.command[0];
-  if (!binary) {
-    throw new AcpError(
-      "AcpClientOptions.command must have at least one element",
-      "EINVAL"
-    );
-  }
-  const args = opts.command.slice(1);
-  const agentId = binary;
-  if (opts.signal?.aborted) throw new AcpAbortError();
-  registerReaperOnce();
-  let child;
-  try {
-    child = (0, import_node_child_process.spawn)(binary, args, {
-      cwd: opts.cwd,
-      stdio: ["pipe", "pipe", "pipe"]
-    });
-  } catch (e) {
-    const err = e;
-    if (err.code === "ENOENT")
-      throw new AcpError(`Agent binary not found: ${binary}`, "ENOENT");
-    throw new AcpError(err.message, err.code);
-  }
-  activeChildren.add(child);
-  const stderrChunks = [];
-  let stderrBytes = 0;
-  child.stderr.on("data", (chunk) => {
-    stderrChunks.push(chunk);
-    stderrBytes += chunk.length;
-    while (stderrBytes > STDERR_BUFFER_BYTES && stderrChunks.length > 1) {
-      const dropped = stderrChunks.shift();
-      if (dropped) stderrBytes -= dropped.length;
-    }
-  });
-  const getStderrTail = () => stderrChunks.length === 0 ? "" : Buffer.concat(stderrChunks).toString("utf8");
-  let nextRequestId = 0;
-  const pending = /* @__PURE__ */ new Map();
-  const collectedText = [];
-  let outputBytes = 0;
-  let outputCapped = false;
-  const cwdAbs = (0, import_node_path.resolve)(opts.cwd);
-  let activeSessionId = null;
-  let serverSupportsClose = false;
-  let stopReason;
-  const sendJson = (obj) => {
-    try {
-      child.stdin.write(JSON.stringify(obj) + "\n", () => {
-      });
-    } catch {
-    }
-  };
-  const sendNotification = (method, params) => {
-    sendJson({ jsonrpc: "2.0", method, params });
-  };
-  const sendCancelNotification = () => {
-    if (!activeSessionId) return;
-    sendNotification("session/cancel", { sessionId: activeSessionId });
-  };
-  const sendRequest = (method, params) => {
-    const id = ++nextRequestId;
-    return new Promise((resolveReq, rejectReq) => {
-      pending.set(id, { resolve: resolveReq, reject: rejectReq });
-      try {
-        child.stdin.write(
-          JSON.stringify({ jsonrpc: "2.0", id, method, params }) + "\n",
-          (err) => {
-            if (err) {
-              pending.delete(id);
-              rejectReq(
-                new AcpError(
-                  `Failed to write to agent stdin: ${err.message}`,
-                  "EIO"
-                )
-              );
-            }
-          }
-        );
-      } catch (err) {
-        pending.delete(id);
-        rejectReq(
-          new AcpError(
-            `Failed to write to agent stdin: ${err.message}`,
-            "EIO"
-          )
-        );
-      }
-    });
-  };
-  const sendResult = (id, result) => {
-    sendJson({ jsonrpc: "2.0", id, result });
-  };
-  const sendError = (id, message, code = -32603) => {
-    sendJson({
-      jsonrpc: "2.0",
-      id,
-      error: { code, message, data: { details: message } }
-    });
-  };
-  const handleSessionUpdate = (params) => {
-    const u = params.update;
-    if (u?.sessionUpdate === "agent_message_chunk" && u.content?.type === "text" && typeof u.content.text === "string") {
-      if (outputCapped) return;
-      const chunk = u.content.text;
-      const remaining = MAX_OUTPUT_BYTES - outputBytes;
-      if (chunk.length <= remaining) {
-        collectedText.push(chunk);
-        outputBytes += chunk.length;
-      } else {
-        if (remaining > 0) collectedText.push(chunk.slice(0, remaining));
-        outputBytes = MAX_OUTPUT_BYTES;
-        outputCapped = true;
-        collectedText.push(
-          `
 
-[output truncated at ${MAX_OUTPUT_BYTES} bytes]
-`
-        );
-      }
-    }
-  };
-  const rl = (0, import_node_readline.createInterface)({ input: child.stdout });
-  rl.on("line", (rawLine) => {
-    const trimmed = rawLine.trim();
-    if (trimmed.length === 0) return;
-    let msg;
-    try {
-      msg = JSON.parse(trimmed);
-    } catch {
-      return;
-    }
-    if (typeof msg.id === "number" && msg.method === void 0 && pending.has(msg.id)) {
-      const handler = pending.get(msg.id);
-      pending.delete(msg.id);
-      if (msg.error) {
-        handler.reject(
-          new AcpError(
-            msg.error.message ?? "Agent returned error",
-            "EAGENT"
-          )
-        );
-      } else {
-        handler.resolve(msg.result);
-      }
-      return;
-    }
-    if (typeof msg.method === "string") {
-      if (msg.method === "session/update") {
-        handleSessionUpdate(msg.params ?? {});
-        return;
-      }
-      if (msg.method === "fs/read_text_file" && msg.id !== void 0) {
-        const reqId = msg.id;
-        void (async () => {
-          try {
-            const result = await readBoundedTextFile(
-              cwdAbs,
-              msg.params ?? {}
-            );
-            sendResult(reqId, result);
-          } catch (err) {
-            sendError(reqId, err.message);
-          }
-        })();
-        return;
-      }
-      if (msg.method === "session/request_permission" && msg.id !== void 0) {
-        const params = msg.params ?? {};
-        const options = Array.isArray(params.options) ? params.options : [];
-        const preferredKinds = opts.autoApprove ? ["allow_once", "allow_always"] : ["reject_once", "reject_always"];
-        let chosen;
-        for (const kind of preferredKinds) {
-          chosen = options.find(
-            (o) => !!o && typeof o === "object" && o.kind === kind && typeof o.optionId === "string"
-          );
-          if (chosen) break;
-        }
-        if (chosen) {
-          sendResult(msg.id, {
-            outcome: { outcome: "selected", optionId: chosen.optionId }
-          });
-        } else {
-          sendResult(msg.id, { outcome: { outcome: "cancelled" } });
-        }
-        return;
-      }
-    }
-  });
-  const killChild = () => {
-    if (!child.killed) {
-      try {
-        child.kill("SIGTERM");
-      } catch {
-      }
-      setTimeout(() => {
-        try {
-          if (!child.killed) child.kill("SIGKILL");
-        } catch {
-        }
-      }, GRACE_PERIOD_MS).unref();
-    }
-  };
-  const spawnErrorPromise = new Promise((_, reject) => {
-    child.once("error", (e) => {
-      if (e.code === "ENOENT") {
-        reject(
-          new AcpError(
-            `Agent binary not found: ${binary}`,
-            "ENOENT",
-            getStderrTail()
-          )
-        );
-      } else {
-        reject(new AcpError(e.message, e.code, getStderrTail()));
-      }
-    });
-  });
-  let timeoutHandle = null;
-  const timeoutPromise = new Promise((_, reject) => {
-    timeoutHandle = setTimeout(() => {
-      sendCancelNotification();
-      killChild();
-      reject(
-        new AcpTimeoutError(agentId, opts.timeout, getStderrTail())
-      );
-    }, opts.timeout);
-  });
-  let abortListener = null;
-  const abortPromise = new Promise((_, reject) => {
-    if (!opts.signal) return;
-    abortListener = () => {
-      sendCancelNotification();
-      killChild();
-      reject(new AcpAbortError(getStderrTail()));
-    };
-    opts.signal.addEventListener("abort", abortListener, { once: true });
-  });
-  const sessionPromise = (async () => {
-    const initResult = await sendRequest("initialize", {
-      protocolVersion: ACP_PROTOCOL_VERSION,
-      clientCapabilities: { fs: { readTextFile: true } }
-    });
-    serverSupportsClose = Boolean(
-      initResult?.agentCapabilities?.sessionCapabilities?.close
-    );
-    const newSessionResult = await sendRequest("session/new", {
-      cwd: opts.cwd,
-      mcpServers: []
-    });
-    activeSessionId = newSessionResult.sessionId;
-    const promptResult = await sendRequest("session/prompt", {
-      sessionId: newSessionResult.sessionId,
-      prompt: [{ type: "text", text: prompt }]
-    });
-    stopReason = coerceStopReason(promptResult?.stopReason);
-    return collectedText.join("");
-  })();
-  try {
-    const races = [
-      sessionPromise,
-      timeoutPromise,
-      spawnErrorPromise
-    ];
-    if (opts.signal) races.push(abortPromise);
-    const output = await Promise.race(races);
-    return {
-      output,
-      metadata: {
-        durationMs: Date.now() - startMs,
-        agentId,
-        ...stopReason !== void 0 ? { stopReason } : {}
-      }
-    };
-  } catch (e) {
-    const tail = getStderrTail();
-    if (e instanceof AcpError) {
-      if (e.stderr === void 0 && tail.length > 0) {
-        if (e instanceof AcpTimeoutError)
-          throw new AcpTimeoutError(e.agentId, e.timeoutMs, tail);
-        if (e instanceof AcpAbortError) throw new AcpAbortError(tail);
-        throw new AcpError(e.message, e.code, tail);
-      }
-      throw e;
-    }
-    const errObj = e instanceof Error ? e : new Error(String(e));
-    throw new AcpError(
-      errObj.message,
-      "EAGENT",
-      tail.length > 0 ? tail : void 0
-    );
-  } finally {
-    if (timeoutHandle) clearTimeout(timeoutHandle);
-    if (abortListener && opts.signal) {
-      try {
-        opts.signal.removeEventListener("abort", abortListener);
-      } catch {
-      }
-    }
-    if (serverSupportsClose && activeSessionId && stopReason !== void 0 && !child.killed) {
-      try {
-        await Promise.race([
-          sendRequest("session/close", {
-            sessionId: activeSessionId
-          }).catch(() => {
-          }),
-          new Promise(
-            (res) => setTimeout(() => res(), SESSION_CLOSE_TIMEOUT_MS).unref()
-          )
-        ]);
-      } catch {
-      }
-    }
-    activeChildren.delete(child);
-    killChild();
-    rl.close();
-  }
-}
-async function probeAgent(agent) {
-  const startMs = Date.now();
-  const binary = agent.command[0];
-  if (!binary) {
-    return {
-      agentId: agent.id,
-      ok: false,
-      durationMs: 0,
-      checkedAt: Date.now(),
-      error: "command must have at least one element"
-    };
-  }
-  let child;
-  try {
-    child = (0, import_node_child_process.spawn)(binary, agent.command.slice(1), {
-      cwd: process.cwd(),
-      stdio: ["pipe", "pipe", "pipe"]
-    });
-  } catch (e) {
-    const err = e;
-    return {
-      agentId: agent.id,
-      ok: false,
-      durationMs: Date.now() - startMs,
-      checkedAt: Date.now(),
-      error: err.code === "ENOENT" ? `Agent binary not found: ${binary}` : err.message
-    };
-  }
-  child.stderr.on("data", () => {
-  });
-  child.on("error", () => {
-  });
-  let nextId = 0;
-  const pending = /* @__PURE__ */ new Map();
-  const rl = (0, import_node_readline.createInterface)({ input: child.stdout });
-  rl.on("line", (line) => {
-    if (!line.trim()) return;
-    try {
-      const m = JSON.parse(line.trim());
-      if (typeof m.id === "number" && pending.has(m.id)) {
-        const handler = pending.get(m.id);
-        pending.delete(m.id);
-        if (m.error) handler.reject(new Error(m.error.message ?? "agent error"));
-        else handler.resolve(m.result);
-      }
-    } catch {
-    }
-  });
-  const send = (method, params) => {
-    const id = ++nextId;
-    return new Promise((res, rej) => {
-      pending.set(id, { resolve: res, reject: rej });
-      try {
-        child.stdin.write(
-          JSON.stringify({ jsonrpc: "2.0", id, method, params }) + "\n"
-        );
-      } catch (e) {
-        pending.delete(id);
-        rej(e);
-      }
-    });
-  };
-  const timeoutPromise = new Promise(
-    (_, rej) => setTimeout(
-      () => rej(
-        new Error(`Probe timed out after ${HEALTH_PROBE_TIMEOUT_MS}ms`)
-      ),
-      HEALTH_PROBE_TIMEOUT_MS
-    ).unref()
-  );
-  try {
-    await Promise.race([
-      send("initialize", {
-        protocolVersion: ACP_PROTOCOL_VERSION,
-        clientCapabilities: {}
-      }),
-      timeoutPromise
-    ]);
-    return {
-      agentId: agent.id,
-      ok: true,
-      durationMs: Date.now() - startMs,
-      checkedAt: Date.now()
-    };
-  } catch (e) {
-    return {
-      agentId: agent.id,
-      ok: false,
-      durationMs: Date.now() - startMs,
-      checkedAt: Date.now(),
-      error: e.message ?? String(e)
-    };
-  } finally {
-    rl.close();
-    try {
-      if (!child.killed) child.kill("SIGTERM");
-    } catch {
-    }
-    setTimeout(() => {
-      try {
-        if (!child.killed) child.kill("SIGKILL");
-      } catch {
-      }
-    }, 1e3).unref();
-  }
-}
-async function probeAll(agentRegistry) {
-  if (agentRegistry.length === 0) return [];
-  return Promise.all(agentRegistry.map((agent) => probeAgent(agent)));
-}
+// node_modules/@regaltsui/acp-delegate/shared/context.ts
+var import_promises3 = require("node:fs/promises");
+var import_node_path4 = require("node:path");
 function looksBinary(buf) {
   const limit = Math.min(buf.length, 8192);
   for (let i = 0; i < limit; i++) if (buf[i] === 0) return true;
   return false;
 }
+function isPathInside2(child, parent) {
+  const rel = (0, import_node_path4.relative)(parent, child);
+  return rel.length > 0 && !rel.startsWith("..") && !(0, import_node_path4.isAbsolute)(rel);
+}
 async function expandSinglePath(cwdAbs, rel, remainingBudget) {
-  const requested = (0, import_node_path.isAbsolute)(rel) ? rel : (0, import_node_path.resolve)(cwdAbs, rel);
-  const target = (0, import_node_path.resolve)(requested);
-  if (target !== cwdAbs && !isPathInside(target, cwdAbs)) {
+  const requested = (0, import_node_path4.isAbsolute)(rel) ? rel : (0, import_node_path4.resolve)(cwdAbs, rel);
+  const target = (0, import_node_path4.resolve)(requested);
+  if (target !== cwdAbs && !isPathInside2(target, cwdAbs)) {
     return [
       {
         path: rel,
@@ -20181,7 +20151,7 @@ async function expandSinglePath(cwdAbs, rel, remainingBudget) {
   }
   let info;
   try {
-    info = await (0, import_promises.stat)(target);
+    info = await (0, import_promises3.stat)(target);
   } catch (e) {
     const err = e;
     return [
@@ -20261,7 +20231,7 @@ async function expandSinglePath(cwdAbs, rel, remainingBudget) {
   }
   let raw;
   try {
-    raw = await (0, import_promises.readFile)(target);
+    raw = await (0, import_promises3.readFile)(target);
   } catch (e) {
     const err = e;
     return [
@@ -20303,7 +20273,7 @@ async function expandSinglePath(cwdAbs, rel, remainingBudget) {
 }
 async function buildContextPreamble(cwd, paths) {
   if (paths.length === 0) return "";
-  const cwdAbs = (0, import_node_path.resolve)(cwd);
+  const cwdAbs = (0, import_node_path4.resolve)(cwd);
   const blocks = [];
   let totalBudget = INCLUDE_CONTEXT_TOTAL_BUDGET_BYTES;
   for (const p of paths) {
@@ -20340,13 +20310,133 @@ ${b.content}
   }
   return parts.join("\n") + "\n\n";
 }
+function snippet(prompt, max) {
+  const cleaned = prompt.replace(/[\u0000-\u001F\u007F]/g, " ").replace(/\s+/g, " ").trim();
+  return cleaned.length <= max ? cleaned : cleaned.slice(0, max - 1) + "\u2026";
+}
+
+// node_modules/@regaltsui/acp-delegate/shared/health.ts
+var import_node_child_process2 = require("node:child_process");
+var import_node_readline2 = require("node:readline");
+async function probeAgent(agent) {
+  const startMs = Date.now();
+  const binary = agent.command[0];
+  if (!binary) {
+    return {
+      agentId: agent.id,
+      ok: false,
+      durationMs: 0,
+      checkedAt: Date.now(),
+      error: "command must have at least one element"
+    };
+  }
+  let child;
+  try {
+    child = (0, import_node_child_process2.spawn)(binary, agent.command.slice(1), {
+      cwd: process.cwd(),
+      stdio: ["pipe", "pipe", "pipe"]
+    });
+  } catch (e) {
+    const err = e;
+    return {
+      agentId: agent.id,
+      ok: false,
+      durationMs: Date.now() - startMs,
+      checkedAt: Date.now(),
+      error: err.code === "ENOENT" ? `Agent binary not found: ${binary}` : err.message
+    };
+  }
+  child.stderr.on("data", () => {
+  });
+  child.on("error", () => {
+  });
+  let nextId = 0;
+  const pending = /* @__PURE__ */ new Map();
+  const rl = (0, import_node_readline2.createInterface)({ input: child.stdout });
+  rl.on("line", (line) => {
+    if (!line.trim()) return;
+    try {
+      const m = JSON.parse(line.trim());
+      if (typeof m.id === "number" && pending.has(m.id)) {
+        const handler = pending.get(m.id);
+        pending.delete(m.id);
+        if (m.error) handler.reject(new Error(m.error.message ?? "agent error"));
+        else handler.resolve(m.result);
+      }
+    } catch {
+    }
+  });
+  const send = (method, params) => {
+    const id = ++nextId;
+    return new Promise((res, rej) => {
+      pending.set(id, { resolve: res, reject: rej });
+      try {
+        child.stdin.write(
+          JSON.stringify({ jsonrpc: "2.0", id, method, params }) + "\n"
+        );
+      } catch (e) {
+        pending.delete(id);
+        rej(e);
+      }
+    });
+  };
+  const timeoutPromise = new Promise(
+    (_, rej) => setTimeout(
+      () => rej(
+        new Error(`Probe timed out after ${HEALTH_PROBE_TIMEOUT_MS}ms`)
+      ),
+      HEALTH_PROBE_TIMEOUT_MS
+    ).unref()
+  );
+  try {
+    await Promise.race([
+      send("initialize", {
+        protocolVersion: ACP_PROTOCOL_VERSION,
+        clientCapabilities: {}
+      }),
+      timeoutPromise
+    ]);
+    return {
+      agentId: agent.id,
+      ok: true,
+      durationMs: Date.now() - startMs,
+      checkedAt: Date.now()
+    };
+  } catch (e) {
+    return {
+      agentId: agent.id,
+      ok: false,
+      durationMs: Date.now() - startMs,
+      checkedAt: Date.now(),
+      error: e.message ?? String(e)
+    };
+  } finally {
+    rl.close();
+    try {
+      if (!child.killed) child.kill("SIGTERM");
+    } catch {
+    }
+    setTimeout(() => {
+      try {
+        if (!child.killed) child.kill("SIGKILL");
+      } catch {
+      }
+    }, 1e3).unref();
+  }
+}
+async function probeAll(agentRegistry) {
+  if (agentRegistry.length === 0) return [];
+  return Promise.all(agentRegistry.map((agent) => probeAgent(agent)));
+}
+
+// node_modules/@regaltsui/acp-delegate/shared/descriptions.ts
 function sanitizeToolSuffix(id) {
   return id.replace(/[^a-zA-Z0-9_]/g, "_");
 }
 function describeAgentFooter(agent) {
   return `
 
-The agent has no prior context \u2014 include all goals, constraints, and the desired output format inline. It can read files within the project directory (read-only); it cannot write or run shell commands. Pass relative file or directory paths via 'includeContext' to attach their contents inline (capped at ${INCLUDE_CONTEXT_TOTAL_BUDGET_BYTES / 1024} KiB total, ${INCLUDE_CONTEXT_PER_FILE_BUDGET_BYTES / 1024} KiB per file). Returns the agent's final text response synchronously, with a [delegate_to_${agent.id}: \u2026] trailer if the response was truncated by the agent's own token limit.`;
+The agent has no prior context \u2014 include all goals, constraints, and the desired output format inline. It can read files within the project directory (read-only); it cannot write or run shell commands. Pass relative file or directory paths via 'includeContext' to attach their contents inline (capped at ${INCLUDE_CONTEXT_TOTAL_BUDGET_BYTES / 1024} KiB total, ${INCLUDE_CONTEXT_PER_FILE_BUDGET_BYTES / 1024} KiB per file). Returns the agent's final text response synchronously, with a [delegate_to_${agent.id}: ...] trailer if the response was truncated by the agent's own token limit.`;
 }
 function describeAgent(agent) {
   if (agent.description !== void 0 && agent.description.length > 0) {
@@ -20355,16 +20445,21 @@ function describeAgent(agent) {
   const label = agent.label ?? agent.id;
   return `Delegate a self-contained task to the '${label}' coding agent (separate process, fresh session). Useful when you want a second opinion from a different model family, when offloading bulk read-only analysis across many files, or when fanning out 3+ independent subtasks in parallel.` + describeAgentFooter(agent);
 }
-function buildSpawnCommand(agent, requestedModel) {
-  const chosen = requestedModel ?? agent.defaultModel;
-  if (chosen === void 0) return [...agent.command];
+function resolveModel(agent, opts) {
+  if (opts.model !== void 0) return opts.model;
+  if (opts.complexity !== void 0 && agent.complexityModels !== void 0) {
+    const tier = agent.complexityModels[opts.complexity];
+    if (tier !== void 0) return tier;
+  }
+  return agent.defaultModel;
+}
+function buildSpawnCommand(agent, resolvedModel) {
+  if (resolvedModel === void 0) return [...agent.command];
   const flag = agent.modelFlag ?? "--model";
-  return [...agent.command, flag, chosen];
+  return [...agent.command, flag, resolvedModel];
 }
-function snippet(prompt, max) {
-  const cleaned = prompt.replace(/[\u0000-\u001F\u007F]/g, " ").replace(/\s+/g, " ").trim();
-  return cleaned.length <= max ? cleaned : cleaned.slice(0, max - 1) + "\u2026";
-}
+
+// node_modules/@regaltsui/acp-delegate/shared/trailer.ts
 function applyStopReasonTrailer(agentId, output, stopReason, durationMs) {
   if (stopReason === void 0 || stopReason === "end_turn")
     return { output, status: "complete" };
@@ -20386,23 +20481,417 @@ function applyStopReasonTrailer(agentId, output, stopReason, durationMs) {
 [delegate_to_${agentId}: stopReason=${stopReason}, durationMs=${durationMs}]`;
   return { output: output + trailer, status: "complete" };
 }
-async function runDelegation(agent, args, ctx) {
-  const startedAt = Date.now();
-  const callId = (0, import_node_crypto.randomUUID)();
-  const sessionIdShort = "";
-  const promptSnippet = snippet(args.prompt, PROMPT_SNIPPET_MAX);
-  const cwd = args.directory ?? ctx.directory;
-  void recordInflight({
-    callId,
-    sessionId: sessionIdShort,
-    agentId: agent.id,
-    promptSnippet,
-    startedAt
-  }).catch(() => {
+
+// node_modules/@regaltsui/acp-delegate/shared/delegation.ts
+var import_node_crypto3 = require("node:crypto");
+
+// node_modules/@regaltsui/acp-delegate/shared/session-pool.ts
+var import_node_crypto2 = require("node:crypto");
+var import_node_path5 = require("node:path");
+var DEFAULT_TTL_MS = 5 * 60 * 1e3;
+var DEFAULT_MAX_SIZE = 8;
+function deriveKey(opts) {
+  const commandHash = (0, import_node_crypto2.createHash)("sha256").update(JSON.stringify(opts.command)).digest("hex");
+  return `${opts.agentId}${opts.cwdAbs}${commandHash}${opts.autoApprove}`;
+}
+var poolReaperRegistered = false;
+function registerPoolReaperOnce(pool) {
+  if (poolReaperRegistered) return;
+  poolReaperRegistered = true;
+  process.once("exit", () => {
+    pool.closeAll().catch(() => {
+    });
   });
-  const finalize = (outcome) => {
+}
+var SessionPool = class {
+  ttlMs;
+  maxSize;
+  /**
+   * All connections per key. An entry may hold both busy and idle connections
+   * simultaneously when multiple callers are active on the same key.
+   */
+  connections = /* @__PURE__ */ new Map();
+  evictInterval = null;
+  closed = false;
+  constructor(opts = {}) {
+    let ttlMs = opts.ttlMs ?? DEFAULT_TTL_MS;
+    if (opts.namespace) {
+      const envKey = `${opts.namespace.envPrefix}_WARM_TTL_MS`;
+      const envVal = process.env[envKey];
+      if (envVal !== void 0) {
+        const parsed = parseInt(envVal, 10);
+        if (!Number.isNaN(parsed) && parsed > 0) ttlMs = parsed;
+      }
+    }
+    this.ttlMs = ttlMs;
+    this.maxSize = opts.maxSize ?? DEFAULT_MAX_SIZE;
+    this.evictInterval = setInterval(() => {
+      this.evict().catch(() => {
+      });
+    }, this.ttlMs / 2).unref();
+    registerPoolReaperOnce(this);
+  }
+  /**
+   * Acquire a connection for the given spec.
+   *
+   * If an idle connection with the same key exists, it is returned immediately.
+   * Otherwise a new connection is spawned. Concurrent callers on the same key
+   * each receive their own connection — no serialization, no EBUSY.
+   *
+   * The caller MUST call release() (or release({ discard: true })) when done.
+   */
+  async acquire(spec) {
+    if (this.closed) {
+      throw new AcpError("SessionPool has been closed", "ECLOSED");
+    }
+    const cwdAbs = (0, import_node_path5.resolve)(spec.cwd);
+    const key = deriveKey({
+      agentId: spec.agentId,
+      cwdAbs,
+      command: spec.command,
+      autoApprove: spec.autoApprove
+    });
+    let conns = this.connections.get(key);
+    if (!conns) {
+      conns = [];
+      this.connections.set(key, conns);
+    }
+    let conn = conns.find((c) => !c.isBusy());
+    if (!conn) {
+      conn = await connectAgent({ command: spec.command, cwd: cwdAbs, key });
+      conns.push(conn);
+    }
+    const capturedConn = conn;
+    const capturedConns = conns;
+    let released = false;
+    const release = (releaseOpts) => {
+      if (released) return;
+      released = true;
+      if (releaseOpts?.discard) {
+        const idx = capturedConns.indexOf(capturedConn);
+        if (idx >= 0) capturedConns.splice(idx, 1);
+        capturedConn.dispose().catch(() => {
+        });
+        if (capturedConns.length === 0) this.connections.delete(key);
+        return;
+      }
+      const otherIdle = capturedConns.find((c) => c !== capturedConn && !c.isBusy());
+      if (otherIdle || this.countIdle() > this.maxSize) {
+        const idx = capturedConns.indexOf(capturedConn);
+        if (idx >= 0) capturedConns.splice(idx, 1);
+        capturedConn.dispose().catch(() => {
+        });
+        if (capturedConns.length === 0) this.connections.delete(key);
+      }
+    };
+    return { conn, release };
+  }
+  countIdle() {
+    let count = 0;
+    for (const conns of this.connections.values()) {
+      for (const c of conns) {
+        if (!c.isBusy()) count++;
+      }
+    }
+    return count;
+  }
+  /**
+   * Dispose all idle connections whose idle time exceeds ttlMs.
+   */
+  async evict() {
+    const now = Date.now();
+    for (const [key, conns] of this.connections) {
+      for (let i = conns.length - 1; i >= 0; i--) {
+        const conn = conns[i];
+        const idleSince = conn.idleSinceMs;
+        if (idleSince !== null && now - idleSince > this.ttlMs) {
+          conns.splice(i, 1);
+          conn.dispose().catch(() => {
+          });
+        }
+      }
+      if (conns.length === 0) this.connections.delete(key);
+    }
+  }
+  /**
+   * Dispose all cached connections and stop the eviction sweep.
+   * After this call, acquire() rejects with ECLOSED.
+   */
+  async closeAll() {
+    if (this.closed) return;
+    this.closed = true;
+    if (this.evictInterval) {
+      clearInterval(this.evictInterval);
+      this.evictInterval = null;
+    }
+    const disposeAll = [];
+    for (const conns of this.connections.values()) {
+      for (const conn of conns) {
+        disposeAll.push(conn.dispose().catch(() => {
+        }));
+      }
+    }
+    this.connections.clear();
+    await Promise.all(disposeAll);
+  }
+};
+var _defaultPool = null;
+function getDefaultPool(namespace) {
+  if (!_defaultPool) {
+    _defaultPool = new SessionPool({ namespace });
+  }
+  return _defaultPool;
+}
+
+// node_modules/@regaltsui/acp-delegate/shared/availability.ts
+var RATE_LIMIT_PATTERNS = [
+  [/429/, "429"],
+  [/rate.?limit/i, "rate-limit"],
+  [/quota/i, "quota"],
+  [/resource.?exhausted/i, "resource-exhausted"],
+  [/overload/i, "overload"],
+  [/too.?many.?requests/i, "too-many-requests"]
+];
+var RETRY_AFTER_PATTERN = /retry[-_ ]?after[:\s]+(\d+)/i;
+function parseRetryAfterMs(text) {
+  const match = RETRY_AFTER_PATTERN.exec(text);
+  if (match === null) return void 0;
+  const seconds = parseInt(match[1], 10);
+  if (Number.isNaN(seconds) || seconds < 0) return void 0;
+  return seconds * 1e3;
+}
+function classifyAcpError(err, stopReason) {
+  if (!(err instanceof AcpError)) {
+    return { transient: false };
+  }
+  if (err.code === "ECANCELLED") {
+    return { transient: false };
+  }
+  const candidates = [err.message];
+  if (err.stderr) candidates.push(err.stderr);
+  if (err.code) candidates.push(err.code);
+  const hintSources = [err.message];
+  if (err.stderr) hintSources.push(err.stderr);
+  let suggestedCooldownMs;
+  for (const src of hintSources) {
+    const ms = parseRetryAfterMs(src);
+    if (ms !== void 0) {
+      suggestedCooldownMs = ms;
+      break;
+    }
+  }
+  for (const [pattern, signal] of RATE_LIMIT_PATTERNS) {
+    for (const candidate of candidates) {
+      if (pattern.test(candidate)) {
+        return { transient: true, signal, ...suggestedCooldownMs !== void 0 && { suggestedCooldownMs } };
+      }
+    }
+  }
+  if (stopReason === "refusal" && err.stderr) {
+    for (const [pattern, signal] of RATE_LIMIT_PATTERNS) {
+      if (pattern.test(err.stderr)) {
+        return { transient: true, signal, ...suggestedCooldownMs !== void 0 && { suggestedCooldownMs } };
+      }
+    }
+  }
+  if (suggestedCooldownMs !== void 0) {
+    return { transient: true, signal: "retry-after", suggestedCooldownMs };
+  }
+  return { transient: false };
+}
+var DEFAULT_COOLDOWN_MS = 6e4;
+function buildKey(agentId, model) {
+  return `${agentId}${model ?? "*"}`;
+}
+var ProviderAvailability = class {
+  defaultCooldownMs;
+  registry = /* @__PURE__ */ new Map();
+  constructor(opts = {}) {
+    this.defaultCooldownMs = opts.defaultCooldownMs ?? DEFAULT_COOLDOWN_MS;
+  }
+  /**
+   * Mark an agent (optionally scoped to a specific model) as unavailable for
+   * `cooldownMs` milliseconds. Subsequent calls with the same key overwrite
+   * the previous expiry.
+   *
+   * Also lazily evicts all already-expired entries on each write.
+   */
+  markUnavailable(agentId, model, cooldownMs) {
+    const effectiveCooldown = cooldownMs ?? this.defaultCooldownMs;
+    const expiresAt = Date.now() + effectiveCooldown;
+    const key = buildKey(agentId, model);
+    this.registry.set(key, { expiresAt });
+    this._evictExpired();
+  }
+  /**
+   * Returns `true` when the agent (/ model combination) is currently
+   * available (i.e. not in a cooldown window), `false` when it is
+   * rate-limited.
+   *
+   * Expired entries are lazily evicted on read.
+   */
+  isAvailable(agentId, model) {
+    const key = buildKey(agentId, model);
+    const entry = this.registry.get(key);
+    if (entry === void 0) return true;
+    if (Date.now() >= entry.expiresAt) {
+      this.registry.delete(key);
+      return true;
+    }
+    return false;
+  }
+  /** Remaining cooldown in ms for a given key, or 0 if available. */
+  remainingCooldownMs(agentId, model) {
+    const key = buildKey(agentId, model);
+    const entry = this.registry.get(key);
+    if (entry === void 0) return 0;
+    const remaining = entry.expiresAt - Date.now();
+    return remaining > 0 ? remaining : 0;
+  }
+  /** Remove all cooldown entries (useful for testing). */
+  clear() {
+    this.registry.clear();
+  }
+  _evictExpired() {
+    const now = Date.now();
+    for (const [key, entry] of this.registry) {
+      if (now >= entry.expiresAt) this.registry.delete(key);
+    }
+  }
+};
+var _defaultInstance;
+function getDefaultAvailability(namespace) {
+  if (_defaultInstance !== void 0) return _defaultInstance;
+  let defaultCooldownMs = DEFAULT_COOLDOWN_MS;
+  if (namespace) {
+    const envKey = `${namespace.envPrefix}_DEFAULT_COOLDOWN_MS`;
+    const envVal = process.env[envKey];
+    if (envVal !== void 0) {
+      const parsed = parseInt(envVal, 10);
+      if (!Number.isNaN(parsed) && parsed > 0) defaultCooldownMs = parsed;
+    }
+  }
+  _defaultInstance = new ProviderAvailability({ defaultCooldownMs });
+  return _defaultInstance;
+}
+
+// node_modules/@regaltsui/acp-delegate/shared/routing.ts
+function defaultResolver(_prompt, agents, hints) {
+  if (agents.length === 0) {
+    throw new Error("resolveAgent: agent registry is empty");
+  }
+  const excludeSet = new Set(hints?.excludeAgentIds ?? []);
+  const eligible = excludeSet.size === 0 ? agents : agents.filter((a) => !excludeSet.has(a.id));
+  if (eligible.length === 0) {
+    throw new Error("resolveAgent: no agents available after exclusion");
+  }
+  if (hints?.preferAgentId !== void 0) {
+    const preferred = eligible.find((a) => a.id === hints.preferAgentId);
+    if (preferred !== void 0) {
+      return { agent: preferred, complexity: hints.complexity, rationale: "preferred" };
+    }
+  }
+  const agent = eligible.find((a) => a.default) ?? eligible[0];
+  return { agent, complexity: hints?.complexity, rationale: "default" };
+}
+var resolver = defaultResolver;
+function resolveAgentExcluding(prompt, agents, excludeIds, hints) {
+  return resolver(prompt, agents, { ...hints, excludeAgentIds: excludeIds });
+}
+
+// node_modules/@regaltsui/acp-delegate/shared/delegation.ts
+async function runDelegation(agent, args, host, pool, agents) {
+  const primaryCallId = (0, import_node_crypto3.randomUUID)();
+  const sessionIdShort = host.getSessionId();
+  const promptSnippet = snippet(args.prompt, PROMPT_SNIPPET_MAX);
+  const cwd = host.getDirectory({ directoryArg: args.directory });
+  const fallbackTrace = { attemptedAgents: [] };
+  const activePool = pool === null ? null : pool ?? getDefaultPool(host.namespace);
+  const executeAttempt = async (attemptAgent, attemptCallId) => {
+    const attemptStart = Date.now();
+    const attemptModel = resolveModel(attemptAgent, { model: args.model, complexity: args.complexity });
+    const attemptCommand = buildSpawnCommand(attemptAgent, attemptModel);
+    void recordInflight(host.namespace, {
+      callId: attemptCallId,
+      sessionId: sessionIdShort,
+      agentId: attemptAgent.id,
+      promptSnippet,
+      startedAt: attemptStart
+    }).catch(() => {
+    });
+    if (activePool === null) {
+      try {
+        const preamble = args.includeContext && args.includeContext.length > 0 ? await buildContextPreamble(cwd, args.includeContext) : "";
+        const result = await runOneShotSession(
+          {
+            command: attemptCommand,
+            cwd,
+            timeout: attemptAgent.timeout ?? DEFAULT_TIMEOUT_MS,
+            signal: host.getAbortSignal(),
+            autoApprove: attemptAgent.autoApprove ?? true
+          },
+          preamble + args.prompt
+        );
+        const durationMs = result.metadata.durationMs;
+        const { output, status } = applyStopReasonTrailer(
+          attemptAgent.id,
+          result.output,
+          result.metadata.stopReason,
+          durationMs
+        );
+        return {
+          output,
+          status,
+          stopReason: result.metadata.stopReason,
+          durationMs,
+          outputBytes: Buffer.byteLength(output, "utf8")
+        };
+      } catch (err) {
+        return errorOutcome(attemptAgent.id, err, Date.now() - attemptStart);
+      }
+    }
+    let acquired = null;
+    try {
+      const preamble = args.includeContext && args.includeContext.length > 0 ? await buildContextPreamble(cwd, args.includeContext) : "";
+      acquired = await activePool.acquire({
+        agentId: attemptAgent.id,
+        command: attemptCommand,
+        cwd,
+        autoApprove: attemptAgent.autoApprove ?? true
+      });
+      const result = await acquired.conn.runPrompt(preamble + args.prompt, {
+        timeout: attemptAgent.timeout ?? DEFAULT_TIMEOUT_MS,
+        signal: host.getAbortSignal(),
+        autoApprove: attemptAgent.autoApprove ?? true
+      });
+      acquired.release();
+      acquired = null;
+      const durationMs = result.metadata.durationMs;
+      const { output, status } = applyStopReasonTrailer(
+        attemptAgent.id,
+        result.output,
+        result.metadata.stopReason,
+        durationMs
+      );
+      return {
+        output,
+        status,
+        stopReason: result.metadata.stopReason,
+        durationMs,
+        outputBytes: Buffer.byteLength(output, "utf8")
+      };
+    } catch (err) {
+      if (acquired) {
+        acquired.release({ discard: true });
+        acquired = null;
+      }
+      return errorOutcome(attemptAgent.id, err, Date.now() - attemptStart);
+    }
+  };
+  const finalizeAttempt = (attemptAgent, attemptCallId, outcome, parentCallId) => {
     const endedAt = Date.now();
-    void resolveInflight(callId, {
+    const attemptModel = resolveModel(attemptAgent, { model: args.model, complexity: args.complexity });
+    void resolveInflight(host.namespace, attemptCallId, {
       status: outcome.status,
       endedAt,
       durationMs: outcome.durationMs,
@@ -20411,9 +20900,10 @@ async function runDelegation(agent, args, ctx) {
     });
     const usage = {
       ts: endedAt,
-      callId,
+      callId: attemptCallId,
+      ...parentCallId !== void 0 ? { parentCallId } : {},
       sessionId: sessionIdShort,
-      agentId: agent.id,
+      agentId: attemptAgent.id,
       status: outcome.status,
       durationMs: outcome.durationMs,
       promptBytes: Buffer.byteLength(args.prompt, "utf8"),
@@ -20421,74 +20911,235 @@ async function runDelegation(agent, args, ctx) {
       ...outcome.errorCode !== void 0 ? { errorCode: outcome.errorCode } : {},
       ...outcome.stopReason !== void 0 ? { stopReason: outcome.stopReason } : {}
     };
-    void appendUsage(usage).catch(() => {
+    void appendUsage(host.namespace, usage).catch(() => {
     });
     return {
       output: outcome.output,
       metadata: {
-        agentId: agent.id,
+        agentId: attemptAgent.id,
         durationMs: outcome.durationMs,
         status: outcome.status,
         ...outcome.stopReason !== void 0 ? { stopReason: outcome.stopReason } : {},
         ...outcome.errorCode !== void 0 ? { errorCode: outcome.errorCode } : {},
-        ...args.model !== void 0 ? { model: args.model } : {}
+        ...attemptModel !== void 0 ? { model: attemptModel } : {},
+        ...args.complexity !== void 0 ? { complexity: args.complexity } : {},
+        fallbackTrace
       }
     };
   };
-  try {
-    const preamble = args.includeContext && args.includeContext.length > 0 ? await buildContextPreamble(cwd, args.includeContext) : "";
-    const fullPrompt = preamble + args.prompt;
-    const command = buildSpawnCommand(agent, args.model);
-    const result = await runOneShotSession(
-      {
-        command,
-        cwd,
-        timeout: agent.timeout ?? DEFAULT_TIMEOUT_MS,
-        signal: ctx.abort,
-        autoApprove: agent.autoApprove ?? true
-      },
-      fullPrompt
-    );
-    const durationMs = result.metadata.durationMs;
-    const { output, status } = applyStopReasonTrailer(
-      agent.id,
-      result.output,
-      result.metadata.stopReason,
-      durationMs
-    );
-    return finalize({
-      output,
-      status,
-      stopReason: result.metadata.stopReason,
-      durationMs,
-      outputBytes: Buffer.byteLength(output, "utf8")
+  const persistNonFinalAttempt = (attemptAgent, attemptCallId, outcome, parentCallId) => {
+    const endedAt = Date.now();
+    void resolveInflight(host.namespace, attemptCallId, {
+      status: outcome.status,
+      endedAt,
+      durationMs: outcome.durationMs,
+      ...outcome.errorCode !== void 0 ? { errorCode: outcome.errorCode } : {}
+    }).catch(() => {
     });
-  } catch (err) {
-    const durationMs = Date.now() - startedAt;
-    if (err instanceof AcpAbortError) {
-      const output2 = `delegate_to_${agent.id} cancelled.`;
-      return finalize({
-        output: output2,
-        status: "cancelled",
-        errorCode: err.code ?? "ECANCELLED",
-        durationMs,
-        outputBytes: Buffer.byteLength(output2, "utf8")
+    const usage = {
+      ts: endedAt,
+      callId: attemptCallId,
+      ...parentCallId !== void 0 ? { parentCallId } : {},
+      sessionId: sessionIdShort,
+      agentId: attemptAgent.id,
+      status: outcome.status,
+      durationMs: outcome.durationMs,
+      promptBytes: Buffer.byteLength(args.prompt, "utf8"),
+      outputBytes: outcome.outputBytes,
+      ...outcome.errorCode !== void 0 ? { errorCode: outcome.errorCode } : {},
+      ...outcome.stopReason !== void 0 ? { stopReason: outcome.stopReason } : {}
+    };
+    void appendUsage(host.namespace, usage).catch(() => {
+    });
+  };
+  host.reportProgress?.({
+    title: `[${agent.id}] ${snippet(args.prompt, TITLE_PROMPT_MAX)}`
+  });
+  if (agents === void 0 || agents.length === 0) {
+    const primaryModel = resolveModel(agent, { model: args.model, complexity: args.complexity });
+    const primaryOutcome = await executeAttempt(agent, primaryCallId);
+    fallbackTrace.attemptedAgents.push({
+      agentId: agent.id,
+      ...primaryModel !== void 0 ? { model: primaryModel } : {},
+      status: primaryOutcome.status === "complete" ? "complete" : "error"
+    });
+    return finalizeAttempt(agent, primaryCallId, primaryOutcome);
+  }
+  const availability = getDefaultAvailability(host.namespace);
+  const retryAttempts = resolveRetryAttempts(
+    args.retryAttempts,
+    `${host.namespace.envPrefix}_RETRY_ATTEMPTS`
+  );
+  const excluded = [];
+  let startAgent = agent;
+  {
+    const agentModel = resolveModel(agent, { model: args.model, complexity: args.complexity });
+    if (!availability.isAvailable(agent.id, agentModel)) {
+      excluded.push(agent.id);
+      try {
+        startAgent = resolveAgentExcluding(args.prompt, agents, excluded).agent;
+      } catch {
+        excluded.length = 0;
+        startAgent = agent;
+      }
+    }
+  }
+  let lastOutcome;
+  let lastAgent = startAgent;
+  let lastCallId = primaryCallId;
+  for (let attempt = 0; attempt < retryAttempts; attempt++) {
+    let currentAgent;
+    if (attempt === 0) {
+      currentAgent = startAgent;
+    } else {
+      try {
+        currentAgent = resolveAgentExcluding(args.prompt, agents, excluded).agent;
+      } catch {
+        break;
+      }
+    }
+    const callId = attempt === 0 ? primaryCallId : (0, import_node_crypto3.randomUUID)();
+    const parentCallId = attempt === 0 ? void 0 : primaryCallId;
+    const currentModel = resolveModel(currentAgent, { model: args.model, complexity: args.complexity });
+    if (attempt > 0) {
+      host.reportProgress?.({
+        title: `[${currentAgent.id}] ${snippet(args.prompt, TITLE_PROMPT_MAX)} (retry ${attempt})`
       });
     }
-    const e = err instanceof AcpError ? err : new AcpError(String(err));
-    const stderrTail = e.stderr ? `
+    const outcome = await executeAttempt(currentAgent, callId);
+    lastOutcome = outcome;
+    lastAgent = currentAgent;
+    lastCallId = callId;
+    if (outcome.status === "complete") {
+      fallbackTrace.attemptedAgents.push({
+        agentId: currentAgent.id,
+        ...currentModel !== void 0 ? { model: currentModel } : {},
+        status: "complete"
+      });
+      return finalizeAttempt(currentAgent, callId, outcome, parentCallId);
+    }
+    if (outcome.errorCode === "ECANCELLED" || outcome.status === "cancelled") {
+      fallbackTrace.attemptedAgents.push({
+        agentId: currentAgent.id,
+        ...currentModel !== void 0 ? { model: currentModel } : {},
+        status: "error"
+      });
+      return finalizeAttempt(currentAgent, callId, outcome, parentCallId);
+    }
+    const syntheticErr = new AcpError(outcome.output, outcome.errorCode);
+    const classification = classifyAcpError(syntheticErr);
+    if (!classification.transient) {
+      fallbackTrace.attemptedAgents.push({
+        agentId: currentAgent.id,
+        ...currentModel !== void 0 ? { model: currentModel } : {},
+        status: "error",
+        ...classification.signal !== void 0 ? { signal: classification.signal } : {}
+      });
+      return finalizeAttempt(currentAgent, callId, outcome, parentCallId);
+    }
+    availability.markUnavailable(currentAgent.id, currentModel, classification.suggestedCooldownMs);
+    fallbackTrace.attemptedAgents.push({
+      agentId: currentAgent.id,
+      ...currentModel !== void 0 ? { model: currentModel } : {},
+      status: "rate-limited",
+      ...classification.signal !== void 0 ? { signal: classification.signal } : {}
+    });
+    excluded.push(currentAgent.id);
+    persistNonFinalAttempt(currentAgent, callId, outcome, parentCallId);
+  }
+  if (lastOutcome === void 0) {
+    const exhaustedOutput = `delegate_to_${agent.id} failed: no attempts could be executed.`;
+    lastOutcome = {
+      output: exhaustedOutput,
+      status: "error",
+      errorCode: "EXHAUSTED",
+      durationMs: 0,
+      outputBytes: Buffer.byteLength(exhaustedOutput, "utf8")
+    };
+    fallbackTrace.attemptedAgents.push({ agentId: agent.id, status: "error" });
+    lastAgent = agent;
+    lastCallId = primaryCallId;
+  }
+  return finalizeAttempt(lastAgent, lastCallId, lastOutcome);
+}
+function errorOutcome(agentId, err, durationMs) {
+  if (err instanceof AcpAbortError) {
+    const output2 = `delegate_to_${agentId} cancelled.`;
+    return { output: output2, status: "cancelled", errorCode: err.code ?? "ECANCELLED", durationMs, outputBytes: Buffer.byteLength(output2, "utf8") };
+  }
+  const e = err instanceof AcpError ? err : new AcpError(String(err));
+  const stderrTail = e.stderr ? `
 --- agent stderr (tail) ---
 ${e.stderr}` : "";
-    const output = `delegate_to_${agent.id} failed (${e.code ?? e.name}): ${e.message}${stderrTail}`;
-    return finalize({
-      output,
-      status: "error",
-      errorCode: e.code ?? e.name,
-      durationMs,
-      outputBytes: Buffer.byteLength(output, "utf8")
-    });
-  }
+  const output = `delegate_to_${agentId} failed (${e.code ?? e.name}): ${e.message}${stderrTail}`;
+  return { output, status: "error", errorCode: e.code ?? e.name, durationMs, outputBytes: Buffer.byteLength(output, "utf8") };
 }
+
+// src/acp-server.ts
+var SERVER_NAME = "acp-delegate";
+var SERVER_VERSION = "0.1.0";
+var PROJECT_CWD = process.cwd();
+var registry2 = [];
+function registerTool(t) {
+  if (registry2.some((r) => r.name === t.name)) {
+    throw new Error(`Duplicate tool name: ${t.name}`);
+  }
+  registry2.push(t);
+}
+var inflightControllers = /* @__PURE__ */ new Set();
+function zodToJsonSchema2(schema) {
+  return zodToJsonSchema(schema, {
+    target: "openApi3",
+    $refStrategy: "none"
+  });
+}
+var server = new Server(
+  { name: SERVER_NAME, version: SERVER_VERSION },
+  { capabilities: { tools: {} } }
+);
+server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  tools: registry2.map((t) => ({
+    name: t.name,
+    description: t.description,
+    inputSchema: t.jsonSchema
+  }))
+}));
+function errorResult(text) {
+  return { content: [{ type: "text", text }], isError: true };
+}
+server.setRequestHandler(
+  CallToolRequestSchema,
+  async (req) => {
+    const { name, arguments: rawArgs } = req.params;
+    const tool = registry2.find((t) => t.name === name);
+    if (!tool) return errorResult(`Unknown tool: ${name}`);
+    const parsed = tool.inputSchema.safeParse(rawArgs ?? {});
+    if (!parsed.success)
+      return errorResult(
+        `Invalid arguments for ${name}: ${parsed.error.message}`
+      );
+    const controller = new AbortController();
+    inflightControllers.add(controller);
+    const ctx = {
+      directory: PROJECT_CWD,
+      abort: controller.signal
+    };
+    try {
+      const result = await tool.execute(parsed.data, ctx);
+      const isError = result.metadata?.["status"] === "error";
+      return {
+        content: [{ type: "text", text: result.output }],
+        isError,
+        _meta: result.metadata
+      };
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      return errorResult(`${name} crashed: ${msg}`);
+    } finally {
+      inflightControllers.delete(controller);
+    }
+  }
+);
 var PROMPT_ARG = external_exports.string().min(1).describe(
   "Self-contained task prompt. The agent has zero prior context; include all goals, constraints, and the desired output format inline."
 );
@@ -20498,46 +21149,58 @@ var INCLUDE_CONTEXT_ARG = external_exports.array(external_exports.string().min(1
 var DIRECTORY_ARG = external_exports.string().optional().describe(
   "Override the project directory used for includeContext and file resolution. Must be an absolute path. Defaults to the MCP server's working directory."
 );
-function makeDelegateTool(agent) {
+function makeDelegateTool(agent, agents) {
   const name = `delegate_to_${sanitizeToolSuffix(agent.id)}`;
   const description = describeAgent(agent);
-  let inputSchema;
-  if (agent.models !== void 0 && agent.models.length > 0) {
-    const modelArg = external_exports.enum(agent.models).optional().describe(
+  const populatedTiers = agent.complexityModels !== void 0 ? COMPLEXITY_TIERS.filter((t) => {
+    const v = agent.complexityModels?.[t];
+    return typeof v === "string" && v.length > 0;
+  }) : [];
+  const hasComplexity = populatedTiers.length > 0;
+  const hasModels = agent.models !== void 0 && agent.models.length > 0;
+  const extraFields = {};
+  if (hasModels) {
+    extraFields["model"] = external_exports.enum(agent.models).optional().describe(
       `Optional. Model id passed to the agent via '${agent.modelFlag ?? "--model"}'. Allowed values: ${agent.models.join(", ")}. ` + (agent.defaultModel !== void 0 ? `Defaults to '${agent.defaultModel}' when omitted.` : "Omit to use the agent's built-in default.")
     );
-    inputSchema = external_exports.object({
-      prompt: PROMPT_ARG,
-      includeContext: INCLUDE_CONTEXT_ARG,
-      directory: DIRECTORY_ARG,
-      model: modelArg
-    });
-  } else {
-    inputSchema = external_exports.object({
-      prompt: PROMPT_ARG,
-      includeContext: INCLUDE_CONTEXT_ARG,
-      directory: DIRECTORY_ARG
-    });
   }
+  if (hasComplexity) {
+    extraFields["complexity"] = external_exports.enum(populatedTiers).optional().describe(
+      `Optional. Complexity tier that selects a model via the agent's complexity routing map. Ignored when 'model' is also supplied ('model' takes precedence). Tiers: ${populatedTiers.map((t) => `${t} \u2192 ${agent.complexityModels[t]}`).join(", ")}.`
+    );
+  }
+  const inputSchema = external_exports.object({
+    prompt: PROMPT_ARG,
+    includeContext: INCLUDE_CONTEXT_ARG,
+    directory: DIRECTORY_ARG,
+    ...extraFields
+  });
   const jsonSchema = zodToJsonSchema2(inputSchema);
   return {
     name,
     description,
     inputSchema,
     jsonSchema,
-    execute: async (args, ctx) => runDelegation(
-      agent,
-      args,
-      ctx
-    )
+    execute: async (args, ctx) => {
+      const typedArgs = args;
+      const host = {
+        getDirectory: ({ directoryArg }) => directoryArg ?? ctx.directory ?? PROJECT_CWD,
+        getSessionId: () => "",
+        getAbortSignal: () => ctx.abort ?? new AbortController().signal,
+        namespace: CLAUDE_NAMESPACE
+      };
+      return runDelegation(agent, typedArgs, host, void 0, agents);
+    }
   };
 }
 async function main() {
-  const config2 = loadConfig();
+  const config2 = loadConfig(CLAUDE_NAMESPACE);
   for (const agent of config2.agents) {
-    registerTool(makeDelegateTool(agent));
+    registerTool(makeDelegateTool(agent, config2.agents));
   }
-  void probeAll(config2.agents).then((health) => setHealthResults(health).catch(() => {
+  void probeAll(config2.agents).then((health) => recordHealth(CLAUDE_NAMESPACE, health).catch((err) => {
+    process.stderr.write(`acp-delegate: recordHealth failed: ${String(err)}
+`);
   })).catch((err) => {
     process.stderr.write(
       `acp-delegate: health probe failed: ${String(err)}
