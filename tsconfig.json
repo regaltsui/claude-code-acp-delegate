@@ -11,11 +11,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "types": ["node"],
-    "paths": {
-      "@regaltsui/acp-delegate": ["./src/types/acp-delegate.d.ts"]
-    }
+    "types": ["node"]
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "node_modules/@regaltsui/acp-delegate"]
+  "exclude": ["node_modules", "dist"]
 }

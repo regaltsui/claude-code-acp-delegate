@@ -3,16 +3,17 @@
   "version": "0.1.0",
   "description": "Claude Code plugin that delegates self-contained tasks to ACP-compatible coding agents via MCP.",
   "license": "MIT",
-  "engines": { "node": ">=18.0.0" },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "build": "esbuild src/acp-server.ts --bundle --platform=node --format=cjs --outfile=dist/acp-server.js",
+    "prepare": "npm run build",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "@regaltsui/acp-delegate": "github:regaltsui/acp-delegate-core",
-    "zod": "^3.23.8",
-    "zod-to-json-schema": "^3.23.0"
+    "@regaltsui/acp-delegate": "github:regaltsui/acp-delegate-core"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
@@ -30,5 +31,7 @@
   ],
   "repository": "https://github.com/regaltsui/claude-code-acp-delegate",
   "homepage": "https://github.com/regaltsui/claude-code-acp-delegate",
-  "author": { "name": "regaltsui" }
+  "author": {
+    "name": "regaltsui"
+  }
 }
